@@ -4,7 +4,11 @@
 #
 # ---------------------------------------------------------------------------- #
 
-MAKEFILE_DIR ?= $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+include mk/deps.mk
+
+# ---------------------------------------------------------------------------- #
+
+MAKEFILE_DIR = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # ---------------------------------------------------------------------------- #
 
@@ -17,8 +21,6 @@ MAKEFILE_DIR ?= $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 CXX        ?= c++
 RM         ?= rm -f
 CAT        ?= cat
-PKG_CONFIG ?= pkg-config
-NIX        ?= nix
 UNAME      ?= uname
 MKDIR      ?= mkdir
 MKDIR_P    ?= $(MKDIR) -p
@@ -31,12 +33,13 @@ SED        ?= sed
 
 OS ?= $(shell $(UNAME))
 OS := $(OS)
+
 ifndef libExt
-ifeq (Linux,$(OS))
-	libExt ?= .so
-else
-	libExt ?= .dylib
-endif  # ifeq (Linux,$(OS))
+	ifeq (Linux,$(OS))
+		libExt ?= .so
+	else
+		libExt ?= .dylib
+	endif  # ifeq (Linux,$(OS))
 endif  # ifndef libExt
 
 
@@ -52,51 +55,19 @@ INCLUDEDIR ?= $(PREFIX)/include
 
 BINS  =  
 LIBS  =  
-TESTS =  $(wildcard tests/*.cc)
+TESTS = $(wildcard tests/*.cc)
 
 
 # ---------------------------------------------------------------------------- #
 
 CXXFLAGS ?=
+LDFLAGS  ?=
+
+
 CXXFLAGS += -I$(MAKEFILE_DIR)/include
 
-lib_CXXFLAGS = -shared -fPIC
-lib_LDFLAGS  = -shared -fPIC -Wl,--no-undefined
-
-
-nljson_CFLAGS ?= $(shell $(PKG_CONFIG) --cflags nlohmann_json)
-nljson_CFLAGS := $(nljson_CFLAGS)
-
-argparse_CFLAGS ?= $(shell $(PKG_CONFIG) --cflags argparse)
-argparse_CFLAGS := $(argparse_CFLAGS)
-
-boost_CFLAGS ?=                                                                \
-  -I$(shell $(NIX) build --no-link --print-out-paths 'nixpkgs#boost')/include
-boost_CFLAGS := $(boost_CFLAGS)
-
-sqlite3_CFLAGS ?= $(shell $(PKG_CONFIG) --cflags sqlite3)
-sqlite3_CFLAGS := $(sqlite3_CFLAGS)
-
-sqlite3_LDFLAGS ?= $(shell $(PKG_CONFIG) --libs sqlite3)
-sqlite3_LDFLAGS := $(sqlite3_LDFLAGS)
-
-ifndef nix_CFLAGS
-	nix_CFLAGS =  $(boost_CFLAGS)
-	nix_CFLAGS += $(shell $(PKG_CONFIG) --cflags nix-main nix-cmd nix-expr)
-	nix_CFLAGS += -isystem $(shell $(PKG_CONFIG) --variable=includedir nix-cmd)
-	nix_CFLAGS +=                                                                 \
-	  -include $(shell $(PKG_CONFIG) --variable=includedir nix-cmd)/nix/config.h
-endif
-nix_CFLAGS := $(nix_CFLAGS)
-
-ifndef nix_LDFLAGS
-	nix_LDFLAGS =                                                        \
-	  $(shell $(PKG_CONFIG) --libs nix-main nix-cmd nix-expr nix-store)
-  nix_LDFLAGS += -lnixfetchers
-endif
-
-##flocodb_LDFLAGS =  '-L$(MAKEFILE_DIR)/lib' -lflocodb
-##flocodb_LDFLAGS += -Wl,--enable-new-dtags '-Wl,-rpath,$$ORIGIN/../lib'
+lib_CXXFLAGS ?= -shared -fPIC
+lib_LDFLAGS  ?= -shared -fPIC -Wl,--no-undefined
 
 
 # ---------------------------------------------------------------------------- #
@@ -153,7 +124,6 @@ $(BINDIR)/%: bin/% | install-dirs
 
 install-bin: $(addprefix $(BINDIR)/,$(BINS))
 install-lib: $(addprefix $(LIBDIR)/,$(LIBS))
-install-include: $(addprefix $(INCLUDEDIR)/,$(GEN_HEADERS))
 install-include: $(patsubst include/,$(INCLUDEDIR)/,$(wildcard include/*.hh))
 
 
@@ -189,9 +159,9 @@ all: bin lib tests
 # ---------------------------------------------------------------------------- #
 
 .PHONY: ccls
-ccls: ../../.ccls
+ccls: .ccls
 
-../../.ccls: FORCE
+.ccls: FORCE
 	echo 'clang' > "$@";
 	{                                                                       \
 	  echo "$(CXXFLAGS) $(sqlite3_CFLAGS) $(nljson_CFLAGS) $(nix_CFLAGS)";  \

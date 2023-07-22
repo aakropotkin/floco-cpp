@@ -4,17 +4,12 @@
 #
 # ---------------------------------------------------------------------------- #
 
-SRC_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-include $(SRC_DIR)/util/Include.mk
-include $(SRC_DIR)/db/Include.mk
-include $(SRC_DIR)/npm/Include.mk
-include $(SRC_DIR)/fetch/Include.mk
-include $(SRC_DIR)/pdef/Include.mk
 
 # ---------------------------------------------------------------------------- #
 
-MAKEFILE_DIR := $(SRC_DIR)
+libfloco_OBJS := $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
 
 
 # ---------------------------------------------------------------------------- #

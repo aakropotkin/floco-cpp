@@ -61,7 +61,7 @@ INCLUDEDIR ?= $(PREFIX)/include
 
 # ---------------------------------------------------------------------------- #
 
-BINS    = fetch
+BINS    = fetch db
 LIBS    = libfloco
 HEADERS = $(wildcard include/*.hh)
 TESTS   = $(wildcard tests/*.cc)

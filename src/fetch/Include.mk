@@ -9,7 +9,8 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # ---------------------------------------------------------------------------- #
 
-fetch_OBJS := $(addprefix $(MAKEFILE_DIR)/,main.o fetch.o)
+libfloco_OBJS := $(MAKEFILE_DIR)/fetch.o
+fetch_OBJS    := $(MAKEFILE_DIR)/main.o
 
 
 # ---------------------------------------------------------------------------- #

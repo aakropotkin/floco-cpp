@@ -132,6 +132,7 @@ bin/$(1): $$($(1)_OBJS)
 endef
 
 $(foreach bin,$(BINS),$(eval $(call genBin,$(bin))))
+bin/db: LDFLAGS += $(sqlite3_LDFLAGS)
 
 
 define genLib =
@@ -142,6 +143,8 @@ lib/$(1)$(libExt): $$($(1)_OBJS)
 endef
 
 $(foreach lib,$(LIBS),$(eval $(call genLib,$(lib))))
+
+lib/libfloco$(libExt): LDFLAGS += $(sqlite3_LDFLAGS)
 
 
 # ---------------------------------------------------------------------------- #

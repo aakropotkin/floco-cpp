@@ -9,7 +9,7 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # ---------------------------------------------------------------------------- #
 
-libfloco_OBJS := $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
+db_OBJS := $(MAKEFILE_DIR)/main.o
 
 
 # ---------------------------------------------------------------------------- #

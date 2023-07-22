@@ -16,9 +16,13 @@
 
 # ---------------------------------------------------------------------------- #
 
-    inherit (( import ./lib { inherit (nixpkgs) lib; } ).libfloco)
-      eachSupportedSystemMap
-    ;
+
+    eachSupportedSystemMap = fn: let
+      supportedSystems = [
+        "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"
+      ];
+      proc = system: { name = system; value = fn system; };
+    in builtins.listToAttrs ( map proc supportedSystems );
 
 
 # ---------------------------------------------------------------------------- #
@@ -35,7 +39,7 @@
 
 # ---------------------------------------------------------------------------- #
 
-    lib = import ./lib { inherit (nixpkgs) lib; };
+    inherit (nixpkgs) lib;
 
 # ---------------------------------------------------------------------------- #
 

@@ -4,29 +4,37 @@
 #
 # ---------------------------------------------------------------------------- #
 
+ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+export ROOT_DIR
+
+# ---------------------------------------------------------------------------- #
+
 include mk/deps.mk
+include src/Include.mk
 
 # ---------------------------------------------------------------------------- #
 
-MAKEFILE_DIR = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+MAKEFILE_DIR := $(ROOT_DIR)
 
 # ---------------------------------------------------------------------------- #
 
-.PHONY: all clean FORCE
+.PHONY: bin lib include tests all clean check FORCE
 .DEFAULT_GOAL = all
 
 
+all: bin lib include tests
+
 # ---------------------------------------------------------------------------- #
 
-CXX        ?= c++
-RM         ?= rm -f
-CAT        ?= cat
-UNAME      ?= uname
-MKDIR      ?= mkdir
-MKDIR_P    ?= $(MKDIR) -p
-CP         ?= cp
-TR         ?= tr
-SED        ?= sed
+CXX     ?= c++
+RM      ?= rm -f
+CAT     ?= cat
+UNAME   ?= uname
+MKDIR   ?= mkdir
+MKDIR_P ?= $(MKDIR) -p
+CP      ?= cp
+TR      ?= tr
+SED     ?= sed
 
 
 # ---------------------------------------------------------------------------- #
@@ -53,18 +61,31 @@ INCLUDEDIR ?= $(PREFIX)/include
 
 # ---------------------------------------------------------------------------- #
 
-BINS  =  
-LIBS  =  
-TESTS = $(wildcard tests/*.cc)
+BINS    = fetch
+LIBS    = libfloco
+HEADERS = $(wildcard include/*.hh)
+TESTS   = $(wildcard tests/*.cc)
+
+
+# ---------------------------------------------------------------------------- #
+
+ifndef floco_LDFLAGS
+	floco_LDFLAGS = -L'$(MAKEFILE_DIR)/lib' -lfloco
+endif  # floco_LDFLAGS
 
 
 # ---------------------------------------------------------------------------- #
 
 CXXFLAGS ?=
-LDFLAGS  ?=
+CXXFLAGS += '-I$(MAKEFILE_DIR)/include'
+CXXFLAGS += $(nix_CFLAGS)
 
+LDFLAGS ?=
+LDFLAGS += -Wl,--enable-new-dtags '-Wl,-rpath,$$ORIGIN/../lib'
+LDFLAGS += $(nix_LDFLAGS)
 
-CXXFLAGS += -I$(MAKEFILE_DIR)/include
+bin_CXXFLAGS ?=
+bin_LDFLAGS  ?= $(floco_LDFLAGS)
 
 lib_CXXFLAGS ?= -shared -fPIC
 lib_LDFLAGS  ?= -shared -fPIC -Wl,--no-undefined
@@ -80,10 +101,8 @@ endif
 
 # ---------------------------------------------------------------------------- #
 
-.PHONY: bin lib include
-
-bin: $(addprefix bin/,$(BINS))
-lib: $(addprefix lib/,$(LIBS))
+bin:     $(addprefix bin/,$(BINS))
+lib:     $(addsuffix $(libExt),$(addprefix lib/,$(LIBS)))
 include:
 
 
@@ -91,11 +110,11 @@ include:
 
 clean: FORCE
 	-$(RM) $(addprefix bin/,$(BINS))
-	-$(RM) $(addprefix lib/,$(LIBS))
+	-$(RM) $(addsuffix $(libExt),$(addprefix lib/,$(LIBS)))
 	-$(RM) **/*.o
 	-$(RM) result
 	-$(RM) -r $(PREFIX)
-	-$(RM) tests/$(TESTS:.cc=)
+	#-$(RM) tests/$(TESTS:.cc=)
 	-$(RM) *.db gmon.out *.log
 
 
@@ -104,16 +123,37 @@ clean: FORCE
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -c "$<"
 
+define genBin =
+bin/$(1): lib/libfloco$(libExt)
+bin/$(1): CXXFLAGS += $$(bin_CXXFLAGS)
+bin/$(1): LDFLAGS  += $$(bin_LDFLAGS)
+bin/$(1): $$($(1)_OBJS)
+	$$(CXX) $$(CXXFLAGS) $$^ $$(LDFLAGS) -o "$$@"
+endef
+
+$(foreach bin,$(BINS),$(eval $(call genBin,$(bin))))
+
+
+define genLib =
+lib/$(1)$(libExt): CXXFLAGS += $$(lib_CXXFLAGS)
+lib/$(1)$(libExt): LDFLAGS  += $$(lib_LDFLAGS)
+lib/$(1)$(libExt): $$($(1)_OBJS)
+	$$(CXX) $$(CXXFLAGS) $$^ $$(LDFLAGS) -o "$$@"
+endef
+
+$(foreach lib,$(LIBS),$(eval $(call genLib,$(lib))))
+
 
 # ---------------------------------------------------------------------------- #
 
-.PHONY: install-dirs install-bin install-lib install-include install
+.PHONY:  install-dirs install-bin install-lib install-include
 install: install-dirs install-bin install-lib install-include
 
 install-dirs: FORCE
-	$(MKDIR_P) $(BINDIR) $(LIBDIR) $(INCLUDEDIR)/pdef
+	$(MKDIR_P) $(BINDIR) $(LIBDIR) $(INCLUDEDIR)
 
 $(INCLUDEDIR)/%: include/% | install-dirs
+	$(MKDIR_P) "$(@D)"
 	$(CP) -- "$<" "$@"
 
 $(LIBDIR)/%: lib/% | install-dirs
@@ -122,14 +162,11 @@ $(LIBDIR)/%: lib/% | install-dirs
 $(BINDIR)/%: bin/% | install-dirs
 	$(CP) -- "$<" "$@"
 
-install-bin: $(addprefix $(BINDIR)/,$(BINS))
-install-lib: $(addprefix $(LIBDIR)/,$(LIBS))
-install-include: $(patsubst include/,$(INCLUDEDIR)/,$(wildcard include/*.hh))
-
+install-bin:     $(addprefix $(BINDIR)/,$(BINS))
+install-lib:     $(addsuffix $(libExt),$(addprefix $(LIBDIR)/,$(LIBS)))
+install-include: $(patsubst include/,$(INCLUDEDIR)/,$(HEADERS))
 
 # ---------------------------------------------------------------------------- #
-
-.PHONY: tests check
 
 $(TESTS:.cc=): %: %.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) "$<" -o "$@"
@@ -149,11 +186,6 @@ check: $(TESTS:.cc=)
 	  echo '';                  \
 	done;                       \
 	exit "$$_ec"
-
-
-# ---------------------------------------------------------------------------- #
-
-all: bin lib tests
 
 
 # ---------------------------------------------------------------------------- #

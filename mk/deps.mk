@@ -4,7 +4,7 @@
 #
 # ---------------------------------------------------------------------------- #
 
-MAKEFILE_DIR = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # ---------------------------------------------------------------------------- #
 
@@ -19,7 +19,7 @@ FLAKE_LOCK ?= $(MAKEFILE_DIR)/../flake.lock
 
 getLockedRev =  $(shell $(JQ) -r '.nodes["$1"].locked.rev' $(FLAKE_LOCK))
 
-NIXPKGS_REF ?= "github:NixOS/nixpkgs$(call getLockedRev,nixpkgs)"
+NIXPKGS_REF ?= github:NixOS/nixpkgs/$(call getLockedRev,nixpkgs)
 NIXPKGS_REF := $(NIXPKGS_REF)
 
 
@@ -42,7 +42,7 @@ argparse_CFLAGS := $(argparse_CFLAGS)
 
 # ---------------------------------------------------------------------------- #
 
-boost_CFLAGS ?= $(call getNixOutpath,'$(NIXPKGS_REF)#boost')/include
+boost_CFLAGS ?= -I$(call getNixOutpath,'$(NIXPKGS_REF)#boost.dev')/include
 boost_CFLAGS := $(boost_CFLAGS)
 
 
@@ -63,7 +63,7 @@ ifndef nix_CFLAGS
 
 	nix_CFLAGS =  $(boost_CFLAGS)
 	nix_CFLAGS += $(shell $(PKG_CONFIG) --cflags nix-main nix-cmd nix-expr)
-	nix_CFLAGS += -isystem $(nix_INCDIR)
+	nix_CFLAGS += -isystem '$(nix_INCDIR)'
 	nix_CFLAGS += -include $(nix_INCDIR)/nix/config.h
 endif  # ifndef nix_CFLAGS
 nix_CFLAGS := $(nix_CFLAGS)

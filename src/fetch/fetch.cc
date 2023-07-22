@@ -15,9 +15,9 @@
 #include <nix/store-api.hh>
 #include <nix/shared.hh>
 #include <nix/url.hh>
-#include "fetch.hh"
 #include <fstream>
 #include "util.hh"
+#include "fetch.hh"
 #include "floco-registry.hh"
 
 

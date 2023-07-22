@@ -12,14 +12,15 @@ PKG_CONFIG ?= pkg-config
 NIX        ?= nix
 JQ         ?= jq
 
+FLAKE_LOCK ?= $(MAKEFILE_DIR)/../flake.lock
+
 
 # ---------------------------------------------------------------------------- #
 
-FLAKE_LOCK   =  $(MAKEFILE_DIR)/../flake.lock
 getLockedRev =  $(shell $(JQ) -r '.nodes["$1"].locked.rev' $(FLAKE_LOCK))
 
-nixpkgsRef ?= "github:NixOS/nixpkgs$(call getLockedRev,nixpkgs)"
-nixpkgsRef := $(nixpkgsRef)
+NIXPKGS_REF ?= "github:NixOS/nixpkgs$(call getLockedRev,nixpkgs)"
+NIXPKGS_REF := $(NIXPKGS_REF)
 
 
 # ---------------------------------------------------------------------------- #
@@ -41,7 +42,7 @@ argparse_CFLAGS := $(argparse_CFLAGS)
 
 # ---------------------------------------------------------------------------- #
 
-boost_CFLAGS ?= $(call getNixOutpath,'$(nixpkgsRef)#boost')/include
+boost_CFLAGS ?= $(call getNixOutpath,'$(NIXPKGS_REF)#boost')/include
 boost_CFLAGS := $(boost_CFLAGS)
 
 

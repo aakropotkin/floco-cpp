@@ -165,7 +165,7 @@ ccls: .ccls
 	echo 'clang' > "$@";
 	{                                                                       \
 	  echo "$(CXXFLAGS) $(sqlite3_CFLAGS) $(nljson_CFLAGS) $(nix_CFLAGS)";  \
-	  echo "$(argparse_CFLAGS) $(boost_CFLAGS)";                            \
+	  echo "$(argparse_CFLAGS)";                                            \
 	  if [[ -n "$(NIX_CC)" ]]; then                                         \
 	    $(CAT) "$(NIX_CC)/nix-support/libc-cflags";                         \
 	    $(CAT) "$(NIX_CC)/nix-support/libcxx-cxxflags";                     \

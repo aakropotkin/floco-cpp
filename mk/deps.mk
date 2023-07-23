@@ -28,6 +28,7 @@ FLAKE_LOCK ?= $(ROOT_DIR)/flake.lock
 
 getLockedRev =  $(shell $(JQ) -r '.nodes["$1"].locked.rev' $(FLAKE_LOCK))
 
+# DO NOT perform eager expansion here.
 NIXPKGS_REF ?= github:NixOS/nixpkgs/$(call getLockedRev,nixpkgs)
 NIXPKGS_REF =  $(NIXPKGS_REF)
 

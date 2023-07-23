@@ -18,22 +18,27 @@
     path = ./.;
     filter = name: type: let
       bname   = baseNameOf name;
+      ext     = let
+        m = builtins.match ".*/[^/]+\\.([^/])" name;
+      in if m == null then "" else builtins.head m;
       ignores = [
-        "result"
-        "default.nix"
-        "pkg-fun.nix"
+        "flake.lock"
         ".git"
         ".gitignore"
         ".github"
         "LICENSE"
-        "CONTRIBUTING.org"
-        "README.org"
         ".ccls"
         ".ccls-cache"
         "out"
+        ".stamp"
       ];
-    in ( ! ( builtins.elem bname ignores ) ) &&
-       ( ( builtins.match ".*\\.o" name ) == null );
+      extIgnores = ["org" ".o" "so" "a" "dylib" "nix"];
+      notIgnored = ( ! ( builtins.elem bname ignores ) ) &&
+                   ( ! ( builtins.elem ext   extIgnores ) );
+      notBin     = ( baseNameOf ( dirOf name ) ) != "bin";
+      notResult  = ( builtins.match ".*/result(-*)?" name ) == null;
+      isSrc      = builtins.elem ext ["cc" "hh" "ipp"];
+    in isSrc || ( notIgnored && notBin && notResult );
   };
   nativeBuildInputs = [pkg-config];
   buildInputs       = [

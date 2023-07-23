@@ -25,32 +25,30 @@ INCLUDEDIR ?= $(PREFIX)/include
 
 # ---------------------------------------------------------------------------- #
 
-include:
-bin:     $(BIN_TARGETS)
-lib:     $(LIB_TARGETS)
+bin: $(BIN_TARGETS)
+lib: $(LIB_TARGETS)
 
 
 # ---------------------------------------------------------------------------- #
 
-.PHONY:  install-dirs install-bin install-lib install-include
-install: install-dirs install-bin install-lib install-include
+.PHONY:  install-bin install-lib install-include
+install: install-bin install-lib install-include
 
-install-dirs: FORCE
-	$(MKDIR_P) $(BINDIR) $(LIBDIR) $(INCLUDEDIR)
+$(INCLUDEDIR): include
+	$(MKDIR_P) "$(@D)"
+	$(CP) -rT -- "$<" "$@"
 
-$(INCLUDEDIR)/%: include/% | install-dirs
+$(LIBDIR)/%: lib/%
 	$(MKDIR_P) "$(@D)"
 	$(CP) -- "$<" "$@"
 
-$(LIBDIR)/%: lib/% | install-dirs
+$(BINDIR)/%: bin/%
+	$(MKDIR_P) "$(@D)"
 	$(CP) -- "$<" "$@"
 
-$(BINDIR)/%: bin/% | install-dirs
-	$(CP) -- "$<" "$@"
-
-install-bin:     $(patsubst bin/,$(BINDIR)/,$(BIN_TARGETS))
-install-lib:     $(patsubst lib/,$(LIBDIR)/,$(LIB_TARGETS))
-install-include: $(patsubst include/,$(INCLUDEDIR)/,$(HEADERS))
+install-bin:     $(patsubst bin/%,$(BINDIR)/%,$(BIN_TARGETS))
+install-lib:     $(patsubst lib/%,$(LIBDIR)/%,$(LIB_TARGETS))
+install-include: $(INCLUDEDIR)
 
 
 # ---------------------------------------------------------------------------- #

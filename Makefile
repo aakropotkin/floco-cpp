@@ -24,6 +24,7 @@ TESTS   = $(wildcard tests/*.cc)
 include mk/deps.mk
 include mk/lib.mk
 include mk/ccls.mk
+include mk/clean.mk
 include src/Include.mk
 
 
@@ -42,14 +43,6 @@ CXX     ?= c++
 MKDIR   ?= mkdir
 MKDIR_P ?= $(MKDIR) -p
 CP      ?= cp
-
-
-# ---------------------------------------------------------------------------- #
-
-PREFIX     ?= $(ROOT_DIR)/out
-BINDIR     ?= $(PREFIX)/bin
-LIBDIR     ?= $(PREFIX)/lib
-INCLUDEDIR ?= $(PREFIX)/include
 
 
 # ---------------------------------------------------------------------------- #
@@ -86,7 +79,7 @@ endif
 
 # ---------------------------------------------------------------------------- #
 
-# Run templates
+# Run templates.
 
 $(foreach bin,$(BINS),$(eval $(call BIN_template,$(bin))))
 $(foreach lib,$(LIBS),$(eval $(call LIB_template,$(lib))))
@@ -100,49 +93,14 @@ $(BIN_TARGETS) $(LIB_TARGETS):
 
 # ---------------------------------------------------------------------------- #
 
-include:
-bin:     $(BIN_TARGETS)
-lib:     $(LIB_TARGETS)
-
-
-# ---------------------------------------------------------------------------- #
-
-clean: FORCE
-	-$(RM) $(BIN_TARGETS)
-	-$(RM) $(LIB_TARGETS)
-	-$(RM) $(ALL_OBJS)
-	-$(RM) result
-	-$(RM) -r $(PREFIX)
-	-$(RM) *.db gmon.out *.log
-
-
-# ---------------------------------------------------------------------------- #
-
-.PHONY:  install-dirs install-bin install-lib install-include
-install: install-dirs install-bin install-lib install-include
-
-install-dirs: FORCE
-	$(MKDIR_P) $(BINDIR) $(LIBDIR) $(INCLUDEDIR)
-
-$(INCLUDEDIR)/%: include/% | install-dirs
-	$(MKDIR_P) "$(@D)"
-	$(CP) -- "$<" "$@"
-
-$(LIBDIR)/%: lib/% | install-dirs
-	$(CP) -- "$<" "$@"
-
-$(BINDIR)/%: bin/% | install-dirs
-	$(CP) -- "$<" "$@"
-
-install-bin:     $(patsubst $(ROOT_DIR)/bin/,$(BINDIR)/,$(BIN_TARGETS))
-install-lib:     $(patsubst $(ROOT_DIR)/lib/,$(LIBDIR)/,$(LIB_TARGETS))
-install-include: $(patsubst include/,$(INCLUDEDIR)/,$(HEADERS))
-
-
-# ---------------------------------------------------------------------------- #
-
 check: FORCE
 	@echo TODO
+
+
+# ---------------------------------------------------------------------------- #
+
+# This needs to come after we run our templates.
+include mk/install.mk
 
 
 # ---------------------------------------------------------------------------- #

@@ -4,7 +4,7 @@
 #
 # ---------------------------------------------------------------------------- #
 
-SRC_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+SRC_DIR := $(call getMakefileDir)
 
 include $(SRC_DIR)/util/Include.mk
 include $(SRC_DIR)/db/Include.mk
@@ -14,7 +14,7 @@ include $(SRC_DIR)/pdef/Include.mk
 
 # ---------------------------------------------------------------------------- #
 
-libfloco_LIBS += sqlite3
+libfloco_LDLIBS += -lsqlite3
 
 
 # ---------------------------------------------------------------------------- #

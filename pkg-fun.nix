@@ -41,8 +41,8 @@
     sqlite.dev nlohmann_json argparse nix.dev boost
   ];
   makeFlags = [
-    "nix_INCDIR=${nix.dev}/include"
-    "boost_CFLAGS=-I${boost}/include"
+    "nix_INCDIR='${nix.dev}/include'"
+    "boost_CPPFLAGS='-isystem ${boost}/include'"
     "libExt=${stdenv.hostPlatform.extensions.sharedLibrary}"
   ];
   configurePhase = ''

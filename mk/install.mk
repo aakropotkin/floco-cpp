@@ -4,13 +4,20 @@
 #
 # ---------------------------------------------------------------------------- #
 
+ifndef _MK_GEN_TARGETS
+$(error "You must include `mk/gen-targets.mk' before `mk/install.mk'")
+endif  # ifndef _MK_GEN_TARGETS
+
+
+# ---------------------------------------------------------------------------- #
+
 ifndef _MK_INSTALL
 
 _MK_INSTALL = 1
 
 # ---------------------------------------------------------------------------- #
 
-PREFIX     ?= $(ROOT_DIR)/out
+PREFIX     ?= out
 BINDIR     ?= $(PREFIX)/bin
 LIBDIR     ?= $(PREFIX)/lib
 INCLUDEDIR ?= $(PREFIX)/include
@@ -41,8 +48,8 @@ $(LIBDIR)/%: lib/% | install-dirs
 $(BINDIR)/%: bin/% | install-dirs
 	$(CP) -- "$<" "$@"
 
-install-bin:     $(patsubst $(ROOT_DIR)/bin/,$(BINDIR)/,$(BIN_TARGETS))
-install-lib:     $(patsubst $(ROOT_DIR)/lib/,$(LIBDIR)/,$(LIB_TARGETS))
+install-bin:     $(patsubst bin/,$(BINDIR)/,$(BIN_TARGETS))
+install-lib:     $(patsubst lib/,$(LIBDIR)/,$(LIB_TARGETS))
 install-include: $(patsubst include/,$(INCLUDEDIR)/,$(HEADERS))
 
 

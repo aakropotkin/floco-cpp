@@ -4,13 +4,13 @@
 #
 # ---------------------------------------------------------------------------- #
 
-MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-
+MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-db_OBJS := $(MAKEFILE_DIR)/main.o
-db_LIBS := sqlite3 floco
+db_OBJS   := $(MAKEFILE_DIR)/main.o
+db_LIBS   := libfloco
+db_LDLIBS := -lsqlite3
 
 
 # ---------------------------------------------------------------------------- #

@@ -12,7 +12,9 @@ _MK_CCLS = 1
 
 # ---------------------------------------------------------------------------- #
 
+ifndef MK_DIR
 MK_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+endif  # ifndef MK_DIR
 
 # ---------------------------------------------------------------------------- #
 
@@ -28,9 +30,9 @@ SED ?= sed
 # ---------------------------------------------------------------------------- #
 
 .PHONY: ccls
-ccls: $(ROOT_DIR)/.ccls
+ccls: .ccls
 
-$(ROOT_DIR)/.ccls: FORCE
+.ccls: FORCE
 	echo 'clang' > "$@";
 	{                                                                       \
 	  echo "$(CXXFLAGS) $(sqlite3_CFLAGS) $(nljson_CFLAGS) $(nix_CFLAGS)";  \

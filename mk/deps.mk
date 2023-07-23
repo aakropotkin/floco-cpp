@@ -11,6 +11,12 @@ _MK_DEPS = 1
 
 # ---------------------------------------------------------------------------- #
 
+ifndef MK_DIR
+MK_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+endif  # ifndef MK_DIR
+
+# ---------------------------------------------------------------------------- #
+
 PKG_CONFIG ?= pkg-config
 NIX        ?= nix
 JQ         ?= jq
@@ -45,8 +51,11 @@ argparse_CFLAGS := $(argparse_CFLAGS)
 
 # ---------------------------------------------------------------------------- #
 
-boost_CFLAGS ?= -I$(call getNixOutpath,'$(NIXPKGS_REF)#boost.dev')/include
-boost_CFLAGS := $(boost_CFLAGS)
+boost_CPPFLAGS ?=                                                    \
+  -isystem $(call getNixOutpath,'$(NIXPKGS_REF)#boost.dev')/include
+boost_CPPFLAGS := $(boost_CPPFLAGS)
+
+boost_CFLAGS = $(boost_CPPFLAGS)
 
 
 # ---------------------------------------------------------------------------- #
@@ -56,19 +65,20 @@ sqlite3_CFLAGS := $(sqlite3_CFLAGS)
 
 sqlite3_LDFLAGS ?= $(shell $(PKG_CONFIG) --libs sqlite3)
 sqlite3_LDFLAGS := $(sqlite3_LDFLAGS)
-.PHONY: -lsqlite3
 
 
 # ---------------------------------------------------------------------------- #
 
 ifndef nix_CFLAGS
 nix_INCDIR ?= $(shell $(PKG_CONFIG) --variable=includedir nix-cmd)
-nix_INCDIR := $(nix_INCDIR)
 
-nix_CFLAGS =  $(boost_CFLAGS)
+ifndef nix_CPPFLAGS
+nix_CPPFLAGS =  $(boost_CPPFLAGS)
+nix_CPPFLAGS += -isystem '$(nix_INCDIR)' -include $(nix_INCDIR)/nix/config.h
+endif  # ifndef nix_CPPFLAGS
+
+nix_CFLAGS =  $(nix_CPPFLAGS)
 nix_CFLAGS += $(shell $(PKG_CONFIG) --cflags nix-main nix-cmd nix-expr)
-nix_CFLAGS += -isystem '$(nix_INCDIR)'
-nix_CFLAGS += -include $(nix_INCDIR)/nix/config.h
 endif  # ifndef nix_CFLAGS
 nix_CFLAGS := $(nix_CFLAGS)
 
@@ -78,7 +88,6 @@ nix_LDFLAGS =                                                        \
 nix_LDFLAGS += -lnixfetchers
 endif  # infndef nix_LDFLAGS
 nix_LDFLAGS := $(nix_LDFLAGS)
-.PHONY: -lnix-main -lnix-cmd -lnix-exp -lnix-store
 
 
 # ---------------------------------------------------------------------------- #

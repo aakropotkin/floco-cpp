@@ -4,18 +4,14 @@
 #
 # ---------------------------------------------------------------------------- #
 
-SRC_DIR := $(call getMakefileDir)
-
-include $(SRC_DIR)/util/Include.mk
-include $(SRC_DIR)/db/Include.mk
-include $(SRC_DIR)/npm/Include.mk
-include $(SRC_DIR)/fetch/Include.mk
-include $(SRC_DIR)/pdef/Include.mk
-include $(SRC_DIR)/inspect/Include.mk
+MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-libfloco_LDLIBS += -lsqlite3
+SRCS = $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
+libfloco_OBJS += $(filter-out %/main.o,$(SRCS))
+inspect_OBJS  += $(MAKEFILE_DIR)/main.o
+inspect_LIBS  += libfloco
 
 
 # ---------------------------------------------------------------------------- #

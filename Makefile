@@ -13,7 +13,7 @@ include mk/config.mk
 
 # ---------------------------------------------------------------------------- #
 
-BINS    = fetch db
+BINS    = fetch db inspect
 LIBS    = libfloco
 HEADERS = $(wildcard include/*.hh)
 TESTS   = $(wildcard tests/*.cc)

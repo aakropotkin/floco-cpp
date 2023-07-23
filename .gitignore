@@ -37,3 +37,5 @@ lib/*
 !lib/.stamp
 result
 result-*
+.ccls
+.ccls-cache

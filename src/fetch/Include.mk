@@ -6,13 +6,11 @@
 
 MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-
 # ---------------------------------------------------------------------------- #
 
-libfloco_OBJS ?=
 libfloco_OBJS += $(MAKEFILE_DIR)/fetch.o
-libfloco_OBJS := $(libfloco_OBJS)
-fetch_OBJS    := $(MAKEFILE_DIR)/main.o
+fetch_OBJS    += $(MAKEFILE_DIR)/main.o
+fetch_LIBS    += floco
 
 
 # ---------------------------------------------------------------------------- #

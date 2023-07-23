@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------------- #
 
 final: prev: {
-  floco-cpp = final.callPackage ./.;
+  floco-cpp = final.callPackage ./. {};
 }
 
 

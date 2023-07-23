@@ -51,7 +51,7 @@
       pkgsFor = nixpkgs.legacyPackages.${system}.extend overlays.default;
     in {
       inherit (pkgsFor) floco-cpp;
-      default = floco-cpp;
+      default = pkgsFor.floco-cpp;
     } );
 
 

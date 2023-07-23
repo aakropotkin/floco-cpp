@@ -12,7 +12,8 @@ _MK_DEPS = 1
 # ---------------------------------------------------------------------------- #
 
 ifndef MK_DIR
-MK_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+MK_DIR :=                                                                    \
+  $(patsubst $(CURDIR)/%/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 endif  # ifndef MK_DIR
 
 # ---------------------------------------------------------------------------- #
@@ -26,11 +27,10 @@ FLAKE_LOCK ?= $(ROOT_DIR)/flake.lock
 
 # ---------------------------------------------------------------------------- #
 
-getLockedRev =  $(shell $(JQ) -r '.nodes["$1"].locked.rev' $(FLAKE_LOCK))
+getLockedRev = $(shell $(JQ) -r '.nodes["$1"].locked.rev' $(FLAKE_LOCK))
 
 # DO NOT perform eager expansion here.
 NIXPKGS_REF ?= github:NixOS/nixpkgs/$(call getLockedRev,nixpkgs)
-NIXPKGS_REF =  $(NIXPKGS_REF)
 
 
 # ---------------------------------------------------------------------------- #

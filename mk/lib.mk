@@ -17,7 +17,8 @@ _MK_LIB = 1
 # ---------------------------------------------------------------------------- #
 
 ifndef MK_DIR
-MK_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+MK_DIR :=                                                                    \
+  $(patsubst $(CURDIR)/%/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 endif  # ifndef MK_DIR
 
 include $(MK_DIR)/config.mk

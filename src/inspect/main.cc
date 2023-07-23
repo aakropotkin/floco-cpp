@@ -10,11 +10,6 @@
 
 /* -------------------------------------------------------------------------- */
 
-using namespace floco;
-
-
-/* -------------------------------------------------------------------------- */
-
   int
 main( int argc, char * argv[], char ** envp)
 {
@@ -24,10 +19,17 @@ main( int argc, char * argv[], char ** envp)
       return EXIT_FAILURE;
     }
 
-  for ( const auto & f : inspect::getBinPaths( argv[1] ) )
+  for ( const auto & f : floco::inspect::getBinPaths( argv[1] ) )
     {
       std::cout << f << std::endl;
     }
 
   return EXIT_SUCCESS;
-}
+}  /* End `main' */
+
+
+/* -------------------------------------------------------------------------- *
+ *
+ *
+ *
+ * ========================================================================== */

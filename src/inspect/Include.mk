@@ -8,10 +8,11 @@ MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-SRCS = $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
+SRCS          =  $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
 libfloco_OBJS += $(filter-out %/main.o,$(SRCS))
 inspect_OBJS  += $(MAKEFILE_DIR)/main.o
 inspect_LIBS  += libfloco
+SRCS          =
 
 
 # ---------------------------------------------------------------------------- #

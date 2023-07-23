@@ -55,7 +55,8 @@ boost_CPPFLAGS ?=                                                    \
   -isystem $(call getNixOutpath,'$(NIXPKGS_REF)#boost.dev')/include
 boost_CPPFLAGS := $(boost_CPPFLAGS)
 
-boost_CFLAGS = $(boost_CPPFLAGS)
+boost_CFLAGS ?= $(boost_CPPFLAGS)
+boost_CFLAGS := $(boost_CFLAGS)
 
 
 # ---------------------------------------------------------------------------- #

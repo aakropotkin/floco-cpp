@@ -50,7 +50,8 @@
     packages = eachSupportedSystemMap ( system: let
       pkgsFor = nixpkgs.legacyPackages.${system}.extend overlays.default;
     in {
-      # TODO
+      inherit (pkgsFor) floco-cpp;
+      default = floco-cpp;
     } );
 
 

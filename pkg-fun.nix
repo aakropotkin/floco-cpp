@@ -15,7 +15,7 @@
   pname   = "floco-cpp";
   version = "0.1.0";
   src     = builtins.path {
-    path = ../.;
+    path = ./.;
     filter = name: type: let
       bname   = baseNameOf name;
       ignores = [
@@ -30,31 +30,22 @@
         "README.org"
         ".ccls"
         ".ccls-cache"
+        "out"
       ];
-    in if type == "directory"
-       then bname != "out"
-       else ! ( builtins.elem bname ignores );
+    in ( ! ( builtins.elem bname ignores ) ) &&
+       ( ( builtins.match ".*\\.o" name ) == null );
   };
-  libExt            = stdenv.hostPlatform.extensions.sharedLibrary;
   nativeBuildInputs = [pkg-config];
   buildInputs       = [
     sqlite.dev nlohmann_json argparse nix.dev boost
   ];
-  makeFlags = [
-    "nix_INCDIR='${nix.dev}/include'"
-    "boost_CPPFLAGS='-isystem ${boost}/include'"
-    "libExt=${stdenv.hostPlatform.extensions.sharedLibrary}"
-  ];
+  nix_INCDIR     = nix.dev.outPath + "/include";
+  boost_CPPFLAGS = "-isystem " + boost.outPath + "/include";
+  libExt         = stdenv.hostPlatform.extensions.sharedLibrary;
   configurePhase = ''
     runHook preConfigure;
     export PREFIX="$out";
     runHook postConfigure;
-  '';
-  buildPhase = ''
-    runHook preBuild;
-    cd ./cli;
-    eval "make $makeFlags";
-    runHook postBuild;
   '';
 }
 

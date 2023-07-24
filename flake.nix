@@ -57,6 +57,40 @@
 
 # ---------------------------------------------------------------------------- #
 
+    devShells = eachSupportedSystemMap ( system: let
+      pkgsFor = nixpkgs.legacyPackages.${system}.extend overlays.default;
+
+      floco-cpp-shell = let
+        batsWith = pkgsFor.bats.withLibraries ( libs: [
+          libs.bats-assert
+          libs.bats-file
+          libs.bats-support
+        ] );
+      in pkgsFor.mkShell {
+        name       = "floco-cpp-shell";
+        inputsFrom = [pkgsFor.floco-cpp];
+        packages   = [
+          batsWith
+          pkgsFor.jq
+        ];
+        shellHook = ''
+          alias gs='git status';
+          alias ga='git add';
+          alias gc='git commit -am';
+          alias gl='git pull';
+          alias gp='git push';
+        '';
+      };
+
+    in {
+      inherit (pkgsFor) floco-cpp;
+      inherit floco-cpp-shell;
+      default = floco-cpp-shell;
+    } );
+
+
+# ---------------------------------------------------------------------------- #
+
   };  # End `outputs'
 
 

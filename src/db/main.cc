@@ -5,17 +5,17 @@
  * -------------------------------------------------------------------------- */
 
 #include <regex>
-#include <stddef.h>               // for NULL
-#include <iostream>               // for operator<<, endl, basic_ostream
-#include <map>                    // for operator!=
-#include <nlohmann/json.hpp>      // for basic_json
-#include <nlohmann/json_fwd.hpp>  // for json
-#include <string>                 // for allocator, basic_string, string
-#include <argparse/argparse.hpp>  // for ArgumentParser, Argument, operator<<
+#include <stddef.h>
+#include <iostream>
+#include <map>
+#include <nlohmann/json.hpp>
+#include <string>
+#include <argparse/argparse.hpp>
 #include <optional>
+
 #include "date.hh"
-#include "floco-sql.hh"           // for pjsCoreSchemaSQL
-#include "pjs-core.hh"            // for pjsJsonToSQL, db
+#include "floco-sql.hh"
+#include "pjs-core.hh"
 #include "sqlite3pp.h"
 #include "floco-registry.hh"
 #include "registry-db.hh"

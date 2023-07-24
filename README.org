@@ -1,0 +1,18 @@
+#+TITLE: floco-cpp
+
+This library contains C++ utilities for use in the
+[[https://github.com/aakropotkin/floco][floco]] framework.
+
+Currently this project is in early stages and is not in use by =floco=.
+
+* Goals
+** DONE Create a cached database for NPM registry fetches.
+** STRT Create a cached database for translated package metadata.
+** TODO Create a cached database for source tree hashes.
+** TODO Migrate basic ~floco translate~ routines to C++.
+** TODO Translate recursively for projects with =install= scripts.
+** TODO Cache =semver= range checking, or port =semverSat= to C++.
+** TODO Support workspaces.
+** TODO Migrate /ideal tree/ formation routines to C++.
+** TODO Create an interactive tree editor.
+A library such as =fzf=, =ranger=, or =ncurses= is a useful base.

@@ -147,8 +147,8 @@ SysInfo::sqlite3WriteCore( sqlite3pp::database & db
   /* We have to copy any fileds that aren't already `std::string' */
   cmd.bind( 1, std::string( parent_ident ),        sqlite3pp::copy );
   cmd.bind( 2, std::string( parent_version ),      sqlite3pp::copy );
-  cmd.bind( 3, nlohmann::json( this->cpu ).dump(), sqlite3pp::copy   );
-  cmd.bind( 4, nlohmann::json( this->os ).dump(),  sqlite3pp::copy   );
+  cmd.bind( 3, nlohmann::json( this->cpu ).dump(), sqlite3pp::copy );
+  cmd.bind( 4, nlohmann::json( this->os ).dump(),  sqlite3pp::copy );
   cmd.execute_all();
 }
 

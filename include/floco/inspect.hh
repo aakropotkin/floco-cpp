@@ -11,6 +11,8 @@
 #include <string>
 #include <list>
 
+#include "pdef.hh"
+
 
 /* -------------------------------------------------------------------------- */
 
@@ -38,6 +40,11 @@ std::list<std::string> getBinPaths( const std::filesystem::path & tree );
 std::list<std::string> getBinPaths( const std::filesystem::path & tree
                                   , const nlohmann::json        & pjs
                                   );
+
+
+/* -------------------------------------------------------------------------- */
+
+PdefCore translate( std::string_view treeURL );
 
 
 /* -------------------------------------------------------------------------- */

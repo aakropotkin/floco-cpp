@@ -7,12 +7,15 @@ Currently this project is in early stages and is not in use by =floco=.
 
 * Goals
 ** DONE Create a cached database for NPM registry fetches.
+** STRT Migrate basic ~floco translate~ routines to C++.
 ** STRT Create a cached database for translated package metadata.
+Cache metadata AS IS from ~floco translate~ without =foverrides= patches.
 ** TODO Create a cached database for source tree hashes.
-** TODO Migrate basic ~floco translate~ routines to C++.
 ** TODO Translate recursively for projects with =install= scripts.
 ** TODO Cache =semver= range checking, or port =semverSat= to C++.
 ** TODO Support workspaces.
 ** TODO Migrate /ideal tree/ formation routines to C++.
+** TODO Migrate =checkSystemSupport= routine to C++.
+Handle "!*" values.
 ** TODO Create an interactive tree editor.
 A library such as =fzf=, =ranger=, or =ncurses= is a useful base.

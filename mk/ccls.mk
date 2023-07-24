@@ -41,7 +41,7 @@ ccls: .ccls
 	    $(CAT) "$(NIX_CC)/nix-support/libc-cflags";                         \
 	    $(CAT) "$(NIX_CC)/nix-support/libcxx-cxxflags";                     \
 	  fi;                                                                   \
-	}|$(TR) ' ' '\n'|$(SED) 's/-std=/%cpp -std=/' >> "$@";
+	}|$(TR) ' ' '\n'|$(SED) -e 's/-std=/%cpp -std=/' -e "s/'//g" >> "$@";
 
 
 # ---------------------------------------------------------------------------- #

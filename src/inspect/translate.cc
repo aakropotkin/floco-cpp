@@ -30,32 +30,28 @@ translate( std::string_view treeURL )
 
   nix::fetchers::Input original = nix::fetchers::Input::fromURL( url );
   auto [tree, locked]           = original.fetch( state.store );
-  std::string treePath          = tree.actualPath;
+  //nix::Hash narHash           = locked.getNarHash().value();
 
-  //nix::Hash      narHash   = locked.getNarHash().value();
+  auto fia = locked.toAttrs();
+  std::string pjsDir = tree.actualPath;
+  std::string fsDir  = ".";
+  if ( auto mDir = fia.find( "dir" ); mDir != fia.end() )
+    {
+      fsDir  =  std::get<std::string>( ( * mDir ).second );
+      pjsDir += "/" + fsDir;
+    }
 
-
-  // TODO: move `floco::db::PjsCore' to `floco::PjsCore'
-  nlohmann::json pjsRaw = getPackageJSON( treePath );
-  db::PjsCore    pjs( pjsRaw );
+  nlohmann::json pjsRaw = getPackageJSON( pjsDir );
+  PjsCore        pjs( pjsRaw );
 
   PdefCore pdef( pjs );
   pdef.fetcher   = locked.getType();
-  pdef.fetchInfo = nix::fetchers::attrsToJSON( locked.toAttrs() );
+  pdef.fetchInfo = nix::fetchers::attrsToJSON( std::move( fia ) );
   pdef.ltype     = treeURL.starts_with( "https://" ) ? LT_FILE : LT_DIR;
 
-  // TODO: do this before trying to read `pjs'. This matters for `git' URIs.
-  try
-    {
-      pdef.fsInfo.dir = std::get<std::string>( locked.toAttrs().at( "dir" ) );
-    }
-  catch( ... )
-    {
-      pdef.fsInfo.dir = ".";
-    }
-
-  pdef.fsInfo.gypfile    = hasGypfile( treePath );
-  pdef.fsInfo.shrinkwrap = hasShrinkwrap( treePath );
+  pdef.fsInfo.dir        = std::move( fsDir );
+  pdef.fsInfo.gypfile    = hasGypfile( pjsDir );
+  pdef.fsInfo.shrinkwrap = hasShrinkwrap( pjsDir );
 
   // TODO: sanity check `binInfo' to make sure `binDir' is a directory.
 

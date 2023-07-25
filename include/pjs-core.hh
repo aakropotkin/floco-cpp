@@ -37,10 +37,6 @@ typedef std::string_view  descriptor_view;
 
 /* -------------------------------------------------------------------------- */
 
-  namespace db {
-
-/* -------------------------------------------------------------------------- */
-
 class PjsCore {
 
   protected:
@@ -107,7 +103,6 @@ void from_json( const nlohmann::json & j,       PjsCore & p );
 
 /* -------------------------------------------------------------------------- */
 
-  }  /* End Namespace `floco::db' */
 }  /* End Namespace `floco' */
 
 

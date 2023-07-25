@@ -75,7 +75,7 @@ BinInfo::BinInfo( sqlite3pp::database & db
 /* -------------------------------------------------------------------------- */
 
   BinInfo &
-BinInfo::operator=( const db::PjsCore & pjs )
+BinInfo::operator=( const PjsCore & pjs )
 {
   this->reset();
   if ( pjs.bin.is_object() )

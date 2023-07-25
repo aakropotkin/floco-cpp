@@ -84,11 +84,11 @@ class PdefCore {
             , floco::version_view   version
             );
 
-    PdefCore( const db::PjsCore & pjs  );
-    PdefCore(       db::PjsCore && pjs );
+    PdefCore( const PjsCore & pjs  );
+    PdefCore(       PjsCore && pjs );
 
-    PdefCore & operator=(       db::PjsCore && pjs );
-    PdefCore & operator=( const db::PjsCore &  pjs );
+    PdefCore & operator=(       PjsCore && pjs );
+    PdefCore & operator=( const PjsCore &  pjs );
 
     nlohmann::json toJSON() const;
 

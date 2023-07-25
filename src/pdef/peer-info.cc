@@ -160,7 +160,7 @@ PeerInfo::PeerInfo( sqlite3pp::database & db
 /* -------------------------------------------------------------------------- */
 
   PeerInfo &
-PeerInfo::operator=( const db::PjsCore & pjs )
+PeerInfo::operator=( const PjsCore & pjs )
 {
   this->peers = {};
   auto madd  = [&]( std::string_view ident )
@@ -196,7 +196,7 @@ PeerInfo::operator=( const db::PjsCore & pjs )
 
 /* -------------------------------------------------------------------------- */
 
-PeerInfo::PeerInfo( const db::PjsCore & pjs )
+PeerInfo::PeerInfo( const PjsCore & pjs )
 {
   this->operator=( pjs );
 }

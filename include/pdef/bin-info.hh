@@ -60,9 +60,9 @@ class BinInfo {
            , floco::version_view   parent_version
            );
 
-    BinInfo( const db::PjsCore & pjs ) { ( * this ) = pjs; }
+    BinInfo( const PjsCore & pjs ) { ( * this ) = pjs; }
 
-    BinInfo & operator=( const db::PjsCore & pjs );
+    BinInfo & operator=( const PjsCore & pjs );
 
     void sqlite3Write( sqlite3pp::database & db
                      , floco::ident_view     parent_ident
@@ -74,7 +74,7 @@ class BinInfo {
     void reset() { this->binDir = std::nullopt; this->binPairs = std::nullopt; }
 
     friend void from_json( const nlohmann::json & j, BinInfo & e );
-    friend class db::PjsCore;
+    friend class PjsCore;
 
 };  /* End class `BinInfo' */
 

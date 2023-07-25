@@ -241,7 +241,7 @@ PdefCore::PdefCore( sqlite3pp::database & db
 
 /* -------------------------------------------------------------------------- */
 
-PdefCore::PdefCore( const db::PjsCore & pjs )
+PdefCore::PdefCore( const PjsCore & pjs )
   : ident( pjs.name )
   , version( pjs.version )
   , key( pjs.name + "/" + pjs.version )
@@ -258,7 +258,7 @@ PdefCore::PdefCore( const db::PjsCore & pjs )
 /* -------------------------------------------------------------------------- */
 
   PdefCore &
-PdefCore::operator=( const db::PjsCore & pjs )
+PdefCore::operator=( const PjsCore & pjs )
 {
   this->ident   = pjs.name;
   this->version = pjs.version;

@@ -73,11 +73,11 @@ class PeerInfo {
             , floco::ident_view     parent_ident
             , floco::version_view   parent_version
             );
-    PeerInfo( const db::PjsCore & pjs );
+    PeerInfo( const PjsCore & pjs );
 
     explicit PeerInfo( const nlohmann::json & j ) { this->init( j ); }
 
-    PeerInfo & operator=( const db::PjsCore & pjs );
+    PeerInfo & operator=( const PjsCore & pjs );
 
     nlohmann::json toJSON() const;
     void           sqlite3Write( sqlite3pp::database & db
@@ -97,7 +97,7 @@ class PeerInfo {
 
     friend void from_json( const nlohmann::json & j, PeerInfo & d );
 
-    friend class db::PjsCore;
+    friend class PjsCore;
 
 };  /* End class `PeerInfo' */
 

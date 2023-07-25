@@ -178,7 +178,7 @@ DepInfo::DepInfo( sqlite3pp::database & db
 /* -------------------------------------------------------------------------- */
 
   DepInfo &
-DepInfo::operator=( const db::PjsCore & pjs )
+DepInfo::operator=( const PjsCore & pjs )
 {
   this->deps = {};
   auto madd  = [&]( std::string_view ident )
@@ -259,7 +259,7 @@ DepInfo::operator=( const db::PjsCore & pjs )
 
 /* -------------------------------------------------------------------------- */
 
-DepInfo::DepInfo( const db::PjsCore &  pjs )
+DepInfo::DepInfo( const PjsCore &  pjs )
 {
   this->operator=( pjs );
 }

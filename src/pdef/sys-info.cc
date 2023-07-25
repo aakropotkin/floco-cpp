@@ -71,11 +71,11 @@ SysInfo::SysInfo( sqlite3pp::database & db
 
 /* -------------------------------------------------------------------------- */
 
-SysInfo::SysInfo( const db::PjsCore & pjs )
+SysInfo::SysInfo( const PjsCore & pjs )
   : cpu( pjs.cpu ), os( pjs.os ), engines( pjs.engines )
 {}
 
-SysInfo::SysInfo( db::PjsCore && pjs )
+SysInfo::SysInfo( PjsCore && pjs )
   : cpu( std::move( pjs.cpu ) )
   , os( std::move( pjs.os ) )
   , engines( std::move( pjs.engines ) )
@@ -85,7 +85,7 @@ SysInfo::SysInfo( db::PjsCore && pjs )
 /* -------------------------------------------------------------------------- */
 
   SysInfo &
-SysInfo::operator=( const db::PjsCore & pjs )
+SysInfo::operator=( const PjsCore & pjs )
 {
   this->cpu     = pjs.cpu;
   this->os      = pjs.os;
@@ -94,7 +94,7 @@ SysInfo::operator=( const db::PjsCore & pjs )
 }
 
   SysInfo &
-SysInfo::operator=( db::PjsCore && pjs )
+SysInfo::operator=( PjsCore && pjs )
 {
   this->cpu     = std::move( pjs.cpu );
   this->os      = std::move( pjs.os );

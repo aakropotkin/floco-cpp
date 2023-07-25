@@ -4,21 +4,18 @@
  *
  * -------------------------------------------------------------------------- */
 
+#include <cstdio>
+#include <filesystem>
+#include <fstream>
+#include <initializer_list>
+#include <nlohmann/json.hpp>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "vinfo.hh"
-#include <cstdio>                                         // for snprintf
-#include <filesystem>                                     // for path
-#include <fstream>                                        // for ifstream
-#include <initializer_list>                               // for initializer...
-#include <nlohmann/detail/iterators/iter_impl.hpp>        // for iter_impl
-#include <nlohmann/detail/iterators/iteration_proxy.hpp>  // for iteration_p...
-#include <nlohmann/detail/json_ref.hpp>                   // for json_ref
-#include <nlohmann/detail/value_t.hpp>                    // for value_t
-#include <nlohmann/json.hpp>                              // for basic_json
-#include <stdexcept>                                      // for invalid_arg...
-#include <string>                                         // for string, bas...
-#include <utility>                                        // for make_pair
-#include <vector>                                         // for vector
-#include "fetch.hh"                                       // for curlFile
+#include "fetch.hh"
 #include "floco-registry.hh"
 
 

@@ -8,11 +8,12 @@
 #include <cstring>
 #include <stdexcept>
 #include <filesystem>
-#include "util.hh"
 #include <nix/fetchers.hh>
 #include <nix/store-api.hh>
 #include <nix/shared.hh>
 #include <nix/eval-inline.hh>
+
+#include "util.hh"
 #include "floco-registry.hh"
 
 

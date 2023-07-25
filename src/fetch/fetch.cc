@@ -16,6 +16,7 @@
 #include <nix/shared.hh>
 #include <nix/url.hh>
 #include <fstream>
+
 #include "util.hh"
 #include "fetch.hh"
 #include "floco-registry.hh"

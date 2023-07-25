@@ -4,12 +4,13 @@
  *
  * -------------------------------------------------------------------------- */
 
-#include <stdlib.h>               // for EXIT_FAILURE
-#include <argparse/argparse.hpp>  // for ArgumentParser, Argument, operator<<
-#include <iostream>               // for operator<<, endl, basic_ostream, cerr
-#include <stdexcept>              // for runtime_error
-#include <string>                 // for string, allocator, basic_string
-#include "fetch.hh"               // for curlFile
+#include <stdlib.h>
+#include <argparse/argparse.hpp>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+#include "fetch.hh"
 
 
 /* -------------------------------------------------------------------------- */

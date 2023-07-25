@@ -4,15 +4,15 @@
  *
  * -------------------------------------------------------------------------- */
 
+#include <map>
+#include <string>
+#include <nlohmann/json.hpp>
+
+#include "util.hh"
+#include "floco-registry.hh"
 #include "fetch.hh"
 #include "packument.hh"
 #include "date.hh"
-#include <map>
-#include <string>
-#include <nlohmann/json.hpp>      // for basic_json
-#include <nlohmann/json_fwd.hpp>  // for json
-#include "util.hh"
-#include "floco-registry.hh"
 
 /* -------------------------------------------------------------------------- */
 

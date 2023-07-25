@@ -14,6 +14,14 @@ fetch_LIBS    += libfloco
 
 
 # ---------------------------------------------------------------------------- #
+
+$(MAKEFILE_DIR)/fetch.o:                                    \
+  $(addprefix include/,util.hh fetch.hh floco-registry.hh)
+
+$(MAKEFILE_DIR)/main.o: include/fetch.hh
+
+
+# ---------------------------------------------------------------------------- #
 #
 #
 #

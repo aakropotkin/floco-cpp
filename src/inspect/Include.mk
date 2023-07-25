@@ -16,6 +16,13 @@ SRCS          =
 
 
 # ---------------------------------------------------------------------------- #
+
+$(MAKEFILE_DIR)/inspect.o:   $(addprefix include/floco/,inspect.hh exception.hh)
+$(MAKEFILE_DIR)/translate.o: $(addprefix include/,util.hh floco/inspect.hh)
+$(MAKEFILE_DIR)/main.o:      $(addprefix include/,pdef.hh floco/inspect.hh)
+
+
+# ---------------------------------------------------------------------------- #
 #
 #
 #

@@ -5,6 +5,7 @@
  * -------------------------------------------------------------------------- */
 
 #include <fstream>
+
 #include "floco/inspect.hh"
 #include "floco/exception.hh"
 

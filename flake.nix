@@ -72,6 +72,7 @@
         packages   = [
           batsWith
           pkgsFor.jq
+          pkgsFor.lcov
         ];
         shellHook = ''
           alias gs='git status';

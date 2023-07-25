@@ -77,6 +77,11 @@ CXXFLAGS += -ggdb3 -pg -fno-omit-frame-pointer
 LDFLAGS  += -ggdb3 -pg -fno-omit-frame-pointer
 endif
 
+ifneq (,$(COV))
+CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
+LDFLAGS  += --coverage -fprofile-arcs -ftest-coverage
+endif
+
 
 # ---------------------------------------------------------------------------- #
 

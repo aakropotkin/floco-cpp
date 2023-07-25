@@ -31,6 +31,15 @@
 *.out
 *.app
 
+# Profiling
+*.gmon
+*.log
+coverage.info
+*.gcda
+*.gcno
+
+
+# Project
 bin/*
 !bin/.stamp
 lib/*
@@ -39,3 +48,4 @@ result
 result-*
 .ccls
 .ccls-cache
+out

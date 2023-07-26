@@ -47,6 +47,9 @@ CP      ?= cp
 
 # ---------------------------------------------------------------------------- #
 
+CPPFLAGS ?=
+LDLIBS   ?=
+
 CXXFLAGS ?=
 CXXFLAGS += -Iinclude
 CXXFLAGS += $(nix_CFLAGS)
@@ -54,9 +57,6 @@ CXXFLAGS += $(nix_CFLAGS)
 LDFLAGS ?=
 LDFLAGS += -Wl,--enable-new-dtags '-Wl,-rpath,$$ORIGIN/../lib'
 LDFLAGS += $(nix_LDFLAGS)
-
-CPPFLAGS ?=
-LDLIBS   ?=
 
 
 bin_CPPFLAGS ?=
@@ -80,6 +80,13 @@ endif
 ifneq (,$(COV))
 CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
 LDFLAGS  += --coverage -fprofile-arcs -ftest-coverage
+endif
+
+
+# ---------------------------------------------------------------------------- #
+
+ifneq (,$(SEMVER))
+CXXFLAGS += -DSEMVER_PATH='$(SEMVER)'
 endif
 
 

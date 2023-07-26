@@ -12,7 +12,13 @@
 
 # ---------------------------------------------------------------------------- #
 
-  outputs = { nixpkgs, ... } @ inputs: let
+  # TODO: break dep cycle by moving `semver'
+  inputs.floco.url = "github:aakropotkin/floco";
+
+
+# ---------------------------------------------------------------------------- #
+
+  outputs = { nixpkgs, floco, ... } @ inputs: let
 
 # ---------------------------------------------------------------------------- #
 
@@ -27,7 +33,7 @@
 
 # ---------------------------------------------------------------------------- #
 
-    overlays.deps      = final: prev: {};
+    overlays.deps      = floco.overlays.default;
     overlays.floco-cpp = import ./overlay.nix;
     overlays.default   = nixpkgs.lib.composeExtensions overlays.deps
                                                        overlays.floco-cpp;
@@ -74,6 +80,7 @@
           pkgsFor.jq
           pkgsFor.lcov
         ];
+        inherit (pkgsFor.floco-cpp) nix_INCDIR boost_CPPFLAGS libExt SEMVER;
         shellHook = ''
           alias gs='git status';
           alias ga='git add';

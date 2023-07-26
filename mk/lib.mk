@@ -41,11 +41,12 @@ endef
 
 # ---------------------------------------------------------------------------- #
 
-BINS        ?=
-BIN_TARGETS ?=
-LIBS        ?=  # basenames: `pthread', `floco'
-LIB_TARGETS ?=  # fullnames: `libpthread.so`, `libfloco.dylib'
-ALL_OBJS    ?=
+TEST_TARGETS ?=
+BINS         ?=
+BIN_TARGETS  ?=
+LIBS         ?=  # basenames: `pthread', `floco'
+LIB_TARGETS  ?=  # fullnames: `libpthread.so`, `libfloco.dylib'
+ALL_OBJS     ?=
 
 
 # ---------------------------------------------------------------------------- #
@@ -60,6 +61,7 @@ bin/$(1): $$($(1)_OBJS) $$($(1)_LIBS:%=lib/%$$(libExt))
 ALL_OBJS    += $$($(1)_OBJS)
 BIN_TARGETS += bin/$(1)
 endef
+
 
 # ---------------------------------------------------------------------------- #
 

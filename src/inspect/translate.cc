@@ -20,6 +20,8 @@ namespace floco {
 
 /* -------------------------------------------------------------------------- */
 
+/* This gets a single `pdef' from a tree. */
+// TODO: translate dependencies recursively.
   PdefCore
 translate( std::string_view treeURL )
 {

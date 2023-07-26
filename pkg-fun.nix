@@ -11,6 +11,7 @@
 , argparse
 , nix
 , boost
+, semver
 }: stdenv.mkDerivation {
   pname   = "floco-cpp";
   version = "0.1.0";
@@ -40,14 +41,14 @@
       isSrc      = builtins.elem ext ["cc" "hh" "ipp"];
     in isSrc || ( notIgnored && notBin && notResult );
   };
-  nativeBuildInputs = [pkg-config];
-  buildInputs       = [
-    sqlite.dev nlohmann_json argparse nix.dev boost
-  ];
-  nix_INCDIR     = nix.dev.outPath + "/include";
-  boost_CPPFLAGS = "-isystem " + boost.outPath + "/include";
-  libExt         = stdenv.hostPlatform.extensions.sharedLibrary;
-  configurePhase = ''
+  nativeBuildInputs     = [pkg-config];
+  buildInputs           = [sqlite.dev nlohmann_json argparse nix.dev boost];
+  propagatedBuildInputs = [semver];
+  nix_INCDIR            = nix.dev.outPath + "/include";
+  boost_CPPFLAGS        = "-isystem " + boost.outPath + "/include";
+  libExt                = stdenv.hostPlatform.extensions.sharedLibrary;
+  SEMVER                = semver.outPath + "/bin/semver";
+  configurePhase        = ''
     runHook preConfigure;
     export PREFIX="$out";
     runHook postConfigure;

@@ -13,6 +13,7 @@ _MK_CLEAN = 1
 clean: FORCE
 	-$(RM) $(BIN_TARGETS)
 	-$(RM) $(LIB_TARGETS)
+	-$(RM) $(TEST_TARGETS)
 	-$(RM) $(ALL_OBJS)
 	-$(RM) result
 	-$(RM) -r $(PREFIX)

@@ -25,12 +25,6 @@ INCLUDEDIR ?= $(PREFIX)/include
 
 # ---------------------------------------------------------------------------- #
 
-bin: $(BIN_TARGETS)
-lib: $(LIB_TARGETS)
-
-
-# ---------------------------------------------------------------------------- #
-
 .PHONY:  install-bin install-lib install-include
 install: install-bin install-lib install-include
 

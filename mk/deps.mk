@@ -88,6 +88,8 @@ ifndef nix_LDFLAGS
 nix_LDFLAGS =                                                        \
   $(shell $(PKG_CONFIG) --libs nix-main nix-cmd nix-expr nix-store)
 nix_LDFLAGS += -lnixfetchers
+# For `libnixstore.so'
+nix_LDFLAGS += $(sqlite3_LDFLAGS)
 endif  # infndef nix_LDFLAGS
 nix_LDFLAGS := $(nix_LDFLAGS)
 

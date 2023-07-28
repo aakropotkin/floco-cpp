@@ -16,12 +16,21 @@ _MK_GEN_TARGETS = 1
 
 $(foreach bin,$(BINS),$(eval $(call BIN_template,$(bin))))
 $(foreach lib,$(LIBS),$(eval $(call LIB_template,$(lib))))
+$(foreach test,$(TESTS),$(eval $(call TEST_template,test_$(test))))
 
 $(ALL_OBJS): %.o: %.cc
 	$(COMPILE.cc) $< -o $@
 
-$(BIN_TARGETS) $(LIB_TARGETS):
+$(BIN_TARGETS) $(LIB_TARGETS) $(TEST_TARGETS):
 	$(LINK.cc) $(filter %.o,$^) $(LDLIBS) -o $@
+
+
+# ---------------------------------------------------------------------------- #
+
+bin:     $(BIN_TARGETS)
+lib:     $(LIB_TARGETS)
+tests:   $(TEST_TARGETS)
+include:
 
 
 # ---------------------------------------------------------------------------- #

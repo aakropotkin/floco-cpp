@@ -8,22 +8,23 @@ MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-ALL_OBJS     += $(MAKEFILE_DIR)/semver.o
-TEST_TARGETS += $(MAKEFILE_DIR)/semver
+TESTS += semver resolve
+
 
 # ---------------------------------------------------------------------------- #
 
 $(MAKEFILE_DIR)/semver.o: include/semver.hh
 
-$(MAKEFILE_DIR)/semver: CPPFLAGS += $(bin_CPPFLAGS)
-$(MAKEFILE_DIR)/semver: CXXFLAGS += $(bin_CXXFLAGS)
-$(MAKEFILE_DIR)/semver: LDFLAGS  += $(bin_LDFLAGS)
-$(MAKEFILE_DIR)/semver: LDFLAGS  += -Wl,-rpath,$(ROOT_DIR)/lib
-$(MAKEFILE_DIR)/semver: LDLIBS   += $(bin_LDLIBS)
-$(MAKEFILE_DIR)/semver: LDLIBS   += -lfloco
-$(MAKEFILE_DIR)/semver: $(MAKEFILE_DIR)/semver.o lib/libfloco$(libExt)
-	$(LINK.cc) $(filter %.o,$^) $(LDLIBS) -o $@
+test_semver_TARGET := $(MAKEFILE_DIR)/semver
+test_semver_OBJS   := $(MAKEFILE_DIR)/semver.o
 
+
+# ---------------------------------------------------------------------------- #
+
+$(MAKEFILE_DIR)/semver.o: $(addprefix include/,semver.hh registry-db.hh)
+
+test_resolve_TARGET := $(MAKEFILE_DIR)/resolve
+test_resolve_OBJS   := $(MAKEFILE_DIR)/resolve.o
 
 
 # ---------------------------------------------------------------------------- #

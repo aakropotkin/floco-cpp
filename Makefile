@@ -13,10 +13,9 @@ include mk/config.mk
 
 # ---------------------------------------------------------------------------- #
 
-BINS    = fetch db inspect
-LIBS    = libfloco
-HEADERS = $(wildcard include/*.hh)
-TESTS   = $(wildcard tests/*.cc)
+BINS    =  fetch db inspect
+LIBS    =  libfloco
+HEADERS =  $(wildcard include/*.hh)
 
 
 # ---------------------------------------------------------------------------- #
@@ -25,16 +24,8 @@ include mk/deps.mk
 include mk/lib.mk
 include mk/ccls.mk
 include mk/clean.mk
+include mk/check.mk
 include src/Include.mk
-
-
-# ---------------------------------------------------------------------------- #
-
-.PHONY: bin lib include all clean check tests FORCE
-.DEFAULT_GOAL = all
-
-
-all: bin lib include tests
 
 
 # ---------------------------------------------------------------------------- #
@@ -92,15 +83,17 @@ endif
 
 # ---------------------------------------------------------------------------- #
 
-check: FORCE
-	@echo TODO
+include mk/gen-targets.mk
+# This needs to come after we run our templates.
+include mk/install.mk
 
 
 # ---------------------------------------------------------------------------- #
 
-include mk/gen-targets.mk
-# This needs to come after we run our templates.
-include mk/install.mk
+.PHONY: all
+.DEFAULT_GOAL = all
+
+all: bin lib include tests
 
 
 # ---------------------------------------------------------------------------- #

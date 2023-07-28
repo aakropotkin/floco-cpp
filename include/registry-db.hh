@@ -20,7 +20,7 @@ namespace floco {
 
 /* -------------------------------------------------------------------------- */
 
-class RegistryDb : PkgRegistry {
+class RegistryDb : public PkgRegistry {
   private:
     std::string                          _dbPath;
     std::unique_ptr<sqlite3pp::database> _db;
@@ -62,7 +62,7 @@ class RegistryDb : PkgRegistry {
       return ( ! this->exists() ) || db::db_stale( this->getDb().get(), ident );
     }
 
-    db::Packument      get( floco::ident_view ident );
+    db::Packument      get( floco::ident_view   ident );
     db::PackumentVInfo get( floco::ident_view   ident
                           , floco::version_view version
                           );

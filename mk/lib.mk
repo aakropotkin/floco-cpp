@@ -16,6 +16,22 @@ _MK_LIB = 1
 
 # ---------------------------------------------------------------------------- #
 
+TEST_TARGETS ?=
+TESTS        ?=
+BINS         ?=
+BIN_TARGETS  ?=
+LIBS         ?=  # basenames: `pthread', `floco'
+LIB_TARGETS  ?=  # fullnames: `libpthread.so`, `libfloco.dylib'
+ALL_OBJS     ?=
+
+
+# ---------------------------------------------------------------------------- #
+
+.PHONY: bin lib include FORCE
+
+
+# ---------------------------------------------------------------------------- #
+
 ifndef MK_DIR
 MK_DIR :=                                                                    \
   $(patsubst $(CURDIR)/%/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
@@ -41,39 +57,31 @@ endef
 
 # ---------------------------------------------------------------------------- #
 
-TEST_TARGETS ?=
-BINS         ?=
-BIN_TARGETS  ?=
-LIBS         ?=  # basenames: `pthread', `floco'
-LIB_TARGETS  ?=  # fullnames: `libpthread.so`, `libfloco.dylib'
-ALL_OBJS     ?=
-
-
-# ---------------------------------------------------------------------------- #
-
 define BIN_template =
-bin/$(1): CPPFLAGS += $$(bin_CPPFLAGS) $$($(1)_CXXFLAGS)
-bin/$(1): CXXFLAGS += $$(bin_CXXFLAGS) $$($(1)_CXXFLAGS)
-bin/$(1): LDFLAGS  += $$(bin_LDFLAGS)  $$($(1)_LDFLAGS)
-bin/$(1): LDLIBS   += $$(bin_LDLIBS)   $$($(1)_LDLIBS)
-bin/$(1): LDLIBS   += $$($(1)_LIBS:lib%=-l%)
-bin/$(1): $$($(1)_OBJS) $$($(1)_LIBS:%=lib/%$$(libExt))
+$(1)_TARGET ?= bin/$(1)
+$$($(1)_TARGET): CPPFLAGS += $$(bin_CPPFLAGS) $$($(1)_CXXFLAGS)
+$$($(1)_TARGET): CXXFLAGS += $$(bin_CXXFLAGS) $$($(1)_CXXFLAGS)
+$$($(1)_TARGET): LDFLAGS  += $$(bin_LDFLAGS)  $$($(1)_LDFLAGS)
+$$($(1)_TARGET): LDLIBS   += $$(bin_LDLIBS)   $$($(1)_LDLIBS)
+$$($(1)_TARGET): LDLIBS   += $$($(1)_LIBS:lib%=-l%)
+$$($(1)_TARGET): $$($(1)_OBJS) $$($(1)_LIBS:%=lib/%$$(libExt))
 ALL_OBJS    += $$($(1)_OBJS)
-BIN_TARGETS += bin/$(1)
+BIN_TARGETS += $$($(1)_TARGET)
 endef
 
 
 # ---------------------------------------------------------------------------- #
 
 define LIB_template =
-lib/$(1)$$(libExt): CPPFLAGS += $$(lib_CPPFLAGS) $$($(1)_CPPFLAGS)
-lib/$(1)$$(libExt): CXXFLAGS += $$(lib_CXXFLAGS) $$($(1)_CXXFLAGS)
-lib/$(1)$$(libExt): LDFLAGS  += $$(lib_LDFLAGS)  $$($(1)_LDFLAGS)
-lib/$(1)$$(libExt): LDLIBS   += $$(lib_LDLIBS)   $$($(1)_LDLIBS)
-lib/$(1)$$(libExt): LDLIBS   += $$($(1)_LIBS:lib%=-l%)
-lib/$(1)$$(libExt): $$($(1)_OBJS) $$($(1)_LIBS:%=lib/%$$(libExt))
+$(1)_TARGET ?= lib/$(1)$$(libExt)
+$$($(1)_TARGET): CPPFLAGS += $$(lib_CPPFLAGS) $$($(1)_CPPFLAGS)
+$$($(1)_TARGET): CXXFLAGS += $$(lib_CXXFLAGS) $$($(1)_CXXFLAGS)
+$$($(1)_TARGET): LDFLAGS  += $$(lib_LDFLAGS)  $$($(1)_LDFLAGS)
+$$($(1)_TARGET): LDLIBS   += $$(lib_LDLIBS)   $$($(1)_LDLIBS)
+$$($(1)_TARGET): LDLIBS   += $$($(1)_LIBS:lib%=-l%)
+$$($(1)_TARGET): $$($(1)_OBJS) $$($(1)_LIBS:%=lib/%$$(libExt))
 ALL_OBJS    += $$($(1)_OBJS)
-LIB_TARGETS += lib/$(1)$$(libExt)
+LIB_TARGETS += $$($(1)_TARGET)
 endef
 
 
@@ -92,6 +100,23 @@ $(1)_CPPFLAGS ::=
 endef
 
 $(foreach t,$(BINS) $(LIBS),$(eval $(call TARGET_template,$(t))))
+
+
+# ---------------------------------------------------------------------------- #
+
+define TEST_template =
+$(1)_LIBS   ?= libfloco
+$(1)_TARGET ?= $(1:test_%=%)
+$$($(1)_TARGET): CPPFLAGS += $$(bin_CPPFLAGS) $$($(1)_CPPFLAGS)
+$$($(1)_TARGET): CXXFLAGS += $$(bin_CXXFLAGS) $$($(1)_CXXFLAGS)
+$$($(1)_TARGET): LDFLAGS  += $$(bin_LDFLAGS)  $$($(1)_LDFLAGS)
+$$($(1)_TARGET): LDLIBS   += $$(bin_LDLIBS)   $$($(1)_LDLIBS)
+$$($(1)_TARGET): LDLIBS   += $$($(1)_LIBS:lib%=-l%)
+$$($(1)_TARGET): LDFLAGS  += -Wl,-rpath,$(ROOT_DIR)/lib
+$$($(1)_TARGET): $$($(1)_OBJS) $$($(1)_LIBS:%=lib/%$$(libExt))
+ALL_OBJS     += $$($(1)_OBJS)
+TEST_TARGETS += $$($(1)_TARGET)
+endef
 
 
 # ---------------------------------------------------------------------------- #

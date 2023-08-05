@@ -34,7 +34,7 @@ translate( std::string_view treeURL )
   auto [tree, locked]           = original.fetch( state.store );
   //nix::Hash narHash           = locked.getNarHash().value();
 
-  auto fia = locked.toAttrs();
+  auto fia           = locked.toAttrs();
   std::string pjsDir = tree.actualPath;
   std::string fsDir  = ".";
   if ( auto mDir = fia.find( "dir" ); mDir != fia.end() )

@@ -30,13 +30,13 @@ check_TARGETS ::=
 # ---------------------------------------------------------------------------- #
 
 check: $(check_TARGETS) FORCE
-	for c in $(TEST_TARGETS); do                \
-	  if ! $(TEST) -e "$$c"; then continue; fi  \
-	  if ! "$$c"; then                          \
-	    echo "PASS: $$c" >&2;                   \
-	  else                                      \
-	    echo "FAIL: $$c" >&2;                   \
-	  fi;                                       \
+	for c in $(check_TARGETS); do                \
+	  if ! $(TEST) -e "$$c"; then continue; fi;  \
+	  if "$$c"; then                             \
+	    echo "PASS: $$c" >&2;                    \
+	  else                                       \
+	    echo "FAIL: $$c" >&2;                    \
+	  fi;                                        \
 	done
 
 

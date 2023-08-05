@@ -71,6 +71,12 @@ sqlite3_LDFLAGS := $(sqlite3_LDFLAGS)
 
 # ---------------------------------------------------------------------------- #
 
+sqlite3pp_CFLAGS ?= $(shell $(PKG_CONFIG) --cflags sqlite3pp)
+sqlite3pp_CFLAGS := $(sqlite3pp_CFLAGS)
+
+
+# ---------------------------------------------------------------------------- #
+
 ifndef nix_CFLAGS
 nix_INCDIR ?= $(shell $(PKG_CONFIG) --variable=includedir nix-cmd)
 

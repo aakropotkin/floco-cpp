@@ -12,6 +12,7 @@
 , nix
 , boost
 , semver
+, sqlite3pp
 }: stdenv.mkDerivation {
   pname   = "floco-cpp";
   version = "0.1.0";
@@ -41,8 +42,10 @@
       isSrc      = builtins.elem ext ["cc" "hh" "ipp"];
     in isSrc || ( notIgnored && notBin && notResult );
   };
-  nativeBuildInputs     = [pkg-config];
-  buildInputs           = [sqlite.dev nlohmann_json argparse nix.dev boost];
+  nativeBuildInputs = [pkg-config];
+  buildInputs       = [
+    sqlite.dev sqlite3pp nlohmann_json argparse nix.dev boost
+  ];
   propagatedBuildInputs = [semver];
   nix_INCDIR            = nix.dev.outPath + "/include";
   boost_CPPFLAGS        = "-isystem " + boost.outPath + "/include";

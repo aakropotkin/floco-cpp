@@ -8,14 +8,7 @@ MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-libfloco_OBJS += $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
-
-
-# ---------------------------------------------------------------------------- #
-
-$(MAKEFILE_DIR)/util.o:   $(addprefix include/,util.hh floco-registry.hh)
-$(MAKEFILE_DIR)/date.o:   include/date.hh
-$(MAKEFILE_DIR)/semver.o: include/semver.hh
+libfloco_SRCS += $(wildcard $(MAKEFILE_DIR)/*.cc)
 
 
 # ---------------------------------------------------------------------------- #

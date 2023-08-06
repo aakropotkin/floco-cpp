@@ -13,10 +13,8 @@ TESTS += resolve
 
 # ---------------------------------------------------------------------------- #
 
-$(MAKEFILE_DIR)/semver.o: $(addprefix include/,registry-db.hh)
-
 test_resolve_TARGET := $(MAKEFILE_DIR)/resolve
-test_resolve_OBJS   := $(MAKEFILE_DIR)/resolve.o
+test_resolve_SRCS   := $(MAKEFILE_DIR)/resolve.cc
 
 
 # ---------------------------------------------------------------------------- #

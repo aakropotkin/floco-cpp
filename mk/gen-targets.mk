@@ -27,10 +27,24 @@ $(BIN_TARGETS) $(LIB_TARGETS) $(TEST_TARGETS):
 
 # ---------------------------------------------------------------------------- #
 
+# Generate and include `*.deps' files that contain predicate rules for
+# which sources depend on which headers.
+# This allows rebuilds in development contexts to properly detect modifications.
+
+$(foreach tgt,$(BINS) $(LIBS),$(eval $(call DEPS_template,$(tgt))))
+$(foreach tgt,$(BINS) $(LIBS),$(eval -include $$($(tgt)_DEPS_TARGET)))
+
+$(foreach test,$(TESTS),$(eval $(call DEPS_template,test_$(test))))
+$(foreach test,$(TEST),$(eval -include $$(test_$(test)_DEPS_TARGET)))
+
+
+# ---------------------------------------------------------------------------- #
+
 bin:     $(BIN_TARGETS)
 lib:     $(LIB_TARGETS)
 tests:   $(TEST_TARGETS)
 include:
+depends: $(DEPEND_TARGETS)
 
 
 # ---------------------------------------------------------------------------- #

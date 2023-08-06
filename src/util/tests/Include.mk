@@ -13,10 +13,8 @@ TESTS += semver
 
 # ---------------------------------------------------------------------------- #
 
-$(MAKEFILE_DIR)/semver.o: include/semver.hh
-
 test_semver_TARGET := $(MAKEFILE_DIR)/semver
-test_semver_OBJS   := $(MAKEFILE_DIR)/semver.o
+test_semver_SRCS   := $(MAKEFILE_DIR)/semver.cc
 
 
 # ---------------------------------------------------------------------------- #

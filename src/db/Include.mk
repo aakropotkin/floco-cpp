@@ -8,16 +8,9 @@ MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-db_OBJS   := $(MAKEFILE_DIR)/main.o
+db_SRCS   := $(MAKEFILE_DIR)/main.cc
 db_LIBS   := libfloco
 db_LDLIBS := -lsqlite3
-
-
-# ---------------------------------------------------------------------------- #
-
-$(MAKEFILE_DIR)/main.o:                                   \
-  $(addprefix include/,date.hh floco-sql.hh pjs-core.hh   \
-                       floco-registry.hh registry-db.hh)
 
 
 # ---------------------------------------------------------------------------- #

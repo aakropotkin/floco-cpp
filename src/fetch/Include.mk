@@ -8,17 +8,9 @@ MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-libfloco_OBJS += $(MAKEFILE_DIR)/fetch.o
-fetch_OBJS    += $(MAKEFILE_DIR)/main.o
+libfloco_SRCS += $(MAKEFILE_DIR)/fetch.cc
+fetch_SRCS    += $(MAKEFILE_DIR)/main.cc
 fetch_LIBS    += libfloco
-
-
-# ---------------------------------------------------------------------------- #
-
-$(MAKEFILE_DIR)/fetch.o:                                    \
-  $(addprefix include/,util.hh fetch.hh floco-registry.hh)
-
-$(MAKEFILE_DIR)/main.o: include/fetch.hh
 
 
 # ---------------------------------------------------------------------------- #

@@ -13,7 +13,7 @@ _MK_CLEAN = 1
 .PHONY: clean
 
 clean: FORCE
-	-$(RM) $(BIN_TARGETS) $(LIB_TARGETS) $(TEST_TARGETS)
+	-$(RM) $(BIN_TARGETS) $(LIB_TARGETS) $(TEST_TARGETS) $(DEPEND_TARGETS)
 	-$(RM) $(ALL_OBJS)
 	-$(RM) -r $(PREFIX)
 	-$(RM) result *.db gmon.out *.log *.gcda *.gcno coverage.info

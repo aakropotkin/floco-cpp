@@ -26,4 +26,4 @@ Currently this project is in early stages and is not in use by `floco`.
 
 ## Documentation
 Docs are generated automatically by `make docs` and can be read
-[here](aakropotkin.github.io/floco-cpp/index.html).
+[here](https://aakropotkin.github.io/floco-cpp/index.html).

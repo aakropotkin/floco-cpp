@@ -25,6 +25,7 @@ include mk/lib.mk
 include mk/ccls.mk
 include mk/clean.mk
 include mk/check.mk
+include mk/docs.mk
 include src/Include.mk
 
 

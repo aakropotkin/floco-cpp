@@ -81,12 +81,22 @@
         name       = "floco-cpp-shell";
         inputsFrom = [pkgsFor.floco-cpp];
         packages   = [
+          # For tests
           batsWith
           pkgsFor.jq
+          # For profiling
           pkgsFor.lcov
-        ];
+          ( if pkgsFor.stdenv.cc.isGNU then pkgsFor.gdb else pkgsFor.lldb )
+          # For doc
+          pkgsFor.doxygen
+        ] ++ ( if ! pkgsFor.stdenv.isLinux then [] else [
+          # For debugging
+          pkgsFor.valgrind
+        ] );
         inherit (pkgsFor.floco-cpp) nix_INCDIR boost_CPPFLAGS libExt SEMVER;
         shellHook = ''
+          shopt -s autocd;
+
           alias gs='git status';
           alias ga='git add';
           alias gc='git commit -am';

@@ -6,10 +6,15 @@
 
 #include <cstdio>
 #include <filesystem>
+#include <string>
+#include <list>
 
+#include "floco/exception.hh"
+#include "floco/descriptor.hh"
 #include "floco-registry.hh"
 #include "registry-db.hh"
 #include "floco-sql.hh"
+#include "semver.hh"
 
 
 /* -------------------------------------------------------------------------- */
@@ -126,7 +131,7 @@ RegistryDb::get( floco::ident_view ident )
 
 /* -------------------------------------------------------------------------- */
 
- db::PackumentVInfo
+  db::PackumentVInfo
 RegistryDb::get( floco::ident_view ident, floco::version_view version )
 {
   std::reference_wrapper<sqlite3pp::database> db = this->getDb( true );
@@ -143,6 +148,63 @@ RegistryDb::get( floco::ident_view ident, floco::version_view version )
   db::Packument p( (std::string_view) this->getPackumentURL( ident ) );
   p.sqlite3Write( db );
   return p.versions.at( (std::string) version );
+}
+
+
+/* -------------------------------------------------------------------------- */
+
+  std::optional<db::PackumentVInfo>
+RegistryDb::resolve( floco::ident_view ident, std::string_view rangeOrTag )
+{
+  bool        isRange;
+  std::string desc( rangeOrTag );
+  switch ( floco::getDescriptorType( desc.c_str() ) )
+    {
+      case DT_DIST_TAG:     isRange = false; break;
+      case DT_SEMVER_RANGE: isRange = true;  break;
+      case DT_NONE: case DT_ERROR:
+        {
+          std::string msg( "Failed to identify descriptor type or '" );
+          msg += desc;
+          msg += "'.";
+          throw FlocoException( msg );
+        }
+        break;
+      default:
+        {
+          std::string msg(
+            "Descriptor must be a range or dist-tag, but got '"
+          );
+          msg += desc;
+          msg += "'.";
+          throw FlocoException( msg );
+        }
+        break;
+    }
+
+  db::Packument pack = this->get( ident );
+  if ( isRange )
+    {
+      std::list<std::string> versions;
+      for ( const auto & [version, timestamp] : pack.time )
+        {
+          if ( version != "modified" ) { versions.emplace_back( version ); }
+        }
+      std::list<std::string> sat = semver::semverSat( desc, versions );
+      if ( sat.empty() ) { return std::nullopt; }
+      return pack.versions.at( sat.back() );
+    }
+  else
+    {
+      if ( auto m = pack.distTags.find( desc ); m != pack.distTags.end() )
+        {
+          return pack.versions.at( m->second );
+        }
+      else
+        {
+          return std::nullopt;
+        }
+    }
 }
 
 

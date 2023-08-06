@@ -20,12 +20,18 @@ $(MAKEFILE_DIR)/pjs-core.o:                                        \
 $(MAKEFILE_DIR)/vinfo.o:                                     \
   $(addprefix include/,fetch.hh floco-registry.hh vinfo.hh)
 
-$(MAKEFILE_DIR)/registry.o:                                            \
-  $(addprefix include/,floco-registry.hh registry-db.hh floco-sql.hh)
+$(MAKEFILE_DIR)/registry.o:                                               \
+  $(addprefix include/,floco-registry.hh registry-db.hh floco-sql.hh      \
+                       semver.hh floco/exception.hh floco/descriptor.hh)
 
 $(MAKEFILE_DIR)/pjs-core.o:                                        \
   $(addprefix include/,fetch.hh date.hh util.hh floco-registry.hh  \
                        packument.hh)
+
+
+# ---------------------------------------------------------------------------- #
+
+include $(MAKEFILE_DIR)/tests/Include.mk
 
 
 # ---------------------------------------------------------------------------- #

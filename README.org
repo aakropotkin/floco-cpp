@@ -9,6 +9,8 @@ Currently this project is in early stages and is not in use by =floco=.
 ** DONE Create a cached database for NPM registry fetches.
 ** STRT Migrate basic ~floco translate~ routines to C++.
 *** TODO resolve, fetch, and translate descriptors.
+**** TODO Use =semver= with =Packument= to /resolve/ descriptors.
+[[./src/npm/registry.cc][registry.cc]]
 *** TODO translate `pdefs' recursively.
 ** STRT Create a cached database for translated package metadata.
 Cache metadata AS IS from ~floco translate~ without =foverrides= patches.

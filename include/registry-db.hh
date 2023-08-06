@@ -67,6 +67,19 @@ class RegistryDb : public PkgRegistry {
                           , floco::version_view version
                           );
 
+    /**
+     * Resolve a dependency request in a registry by semantic version range or
+     * dist tag.
+     * @param ident Package identifier ( name ) to resolve.
+     * @param rangeOrTag Semantic version range used to filter version list, or
+     *                   a `distTag` name such as `latest` or `stable`.
+     * @return `std::nullopt` is no satisfactory matches are found, otherwise
+     *          the packument version information record of the best
+     *          satisfactory result.
+     */
+      std::optional<db::PackumentVInfo>
+    resolve( floco::ident_view ident, std::string_view rangeOrTag );
+
 
 };  /* End class `RegistryDb' */
 

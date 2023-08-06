@@ -7,7 +7,6 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "semver.hh"
 #include "registry-db.hh"
 
 
@@ -26,38 +25,30 @@ main( int argc, char * argv[], char ** envp )
     }
   if ( argc < 3 )
     {
-      std::cerr << "You must provide a semantic version range." << std::endl;
+      std::cerr << "You must provide a descriptor." << std::endl;
       return EXIT_FAILURE;
     }
 
   std::string ident( argv[1] );
-  std::string range( argv[2] );
+  std::string descriptor( argv[2] );
 
 /* -------------------------------------------------------------------------- */
 
   // TODO: move `floco::db::Packument' -> `floco::Packument'
   floco::registry::RegistryDb registry;
-  floco::db::Packument        pack( ident, registry );
 
-  std::list<std::string> versions;
-  for ( const auto & [version, date] : pack.versions )
+  std::optional<floco::db::PackumentVInfo> pvi =
+    registry.resolve( ident, descriptor );
+
+  if ( pvi.has_value() )
     {
-      versions.push_back( version );
-    }
-
-  std::list<std::string> sats = semver::semverSat( range, versions );
-
-  if ( sats.empty() )
-    {
-      std::cerr << "'" << ident << "' does not have any versions in the range '"
-                << range << "'." << std::endl;
+      std::cout << pvi.value().toJSON().dump() << std::endl;
     }
   else
     {
-      for ( const auto & version : sats )
-        {
-          std::cout << version << std::endl;
-        }
+      std::cerr << "'" << ident
+                << "' does not have any versions for the descriptor '"
+                << descriptor << "'." << std::endl;
     }
 
 

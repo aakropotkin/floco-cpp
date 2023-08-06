@@ -8,15 +8,15 @@ MAKEFILE_DIR := $(call getMakefileDir)
 
 # ---------------------------------------------------------------------------- #
 
-TESTS += semver
+TESTS += resolve
 
 
 # ---------------------------------------------------------------------------- #
 
-$(MAKEFILE_DIR)/semver.o: include/semver.hh
+$(MAKEFILE_DIR)/semver.o: $(addprefix include/,registry-db.hh)
 
-test_semver_TARGET := $(MAKEFILE_DIR)/semver
-test_semver_OBJS   := $(MAKEFILE_DIR)/semver.o
+test_resolve_TARGET := $(MAKEFILE_DIR)/resolve
+test_resolve_OBJS   := $(MAKEFILE_DIR)/resolve.o
 
 
 # ---------------------------------------------------------------------------- #

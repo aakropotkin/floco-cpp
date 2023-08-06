@@ -44,7 +44,7 @@ LDLIBS   ?=
 
 CXXFLAGS ?=
 CXXFLAGS += -Iinclude
-CXXFLAGS += $(nix_CFLAGS)
+CXXFLAGS += $(nix_CFLAGS) $(sqlite3pp_CFLAGS)
 
 LDFLAGS ?=
 LDFLAGS += -Wl,--enable-new-dtags '-Wl,-rpath,$$ORIGIN/../lib'

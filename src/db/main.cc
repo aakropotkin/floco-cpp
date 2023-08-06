@@ -7,15 +7,15 @@
 #include <regex>
 #include <stddef.h>
 #include <iostream>
-#include <nlohmann/json.hpp>
 #include <string>
-#include <argparse/argparse.hpp>
 #include <optional>
+#include <nlohmann/json.hpp>
+#include <argparse/argparse.hpp>
+#include <sqlite3pp.hh>
 
 #include "date.hh"
 #include "floco-sql.hh"
 #include "pjs-core.hh"
-#include "sqlite3pp.h"
 #include "floco-registry.hh"
 #include "registry-db.hh"
 

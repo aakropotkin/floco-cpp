@@ -15,9 +15,9 @@ db_LDLIBS := -lsqlite3
 
 # ---------------------------------------------------------------------------- #
 
-$(MAKEFILE_DIR)/main.o:                                                 \
-  $(addprefix include/,date.hh floco-sql.hh pjs-core.hh sqlite3pp.h     \
-                       sqlite3pp.ipp floco-registry.hh registry-db.hh)
+$(MAKEFILE_DIR)/main.o:                                   \
+  $(addprefix include/,date.hh floco-sql.hh pjs-core.hh   \
+                       floco-registry.hh registry-db.hh)
 
 
 # ---------------------------------------------------------------------------- #

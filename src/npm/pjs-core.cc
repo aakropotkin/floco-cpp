@@ -8,14 +8,14 @@
 #include <filesystem>
 #include <fstream>
 #include <initializer_list>
-#include <nlohmann/json.hpp>
 #include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
+#include <nlohmann/json.hpp>
+#include <sqlite3pp.hh>
 
 #include "fetch.hh"
-#include "sqlite3pp.h"
 #include "util.hh"
 #include "floco-registry.hh"
 #include "pjs-core.hh"

@@ -9,10 +9,11 @@
 #include <list>
 #include <nlohmann/json.hpp>
 #include <string>
-#include "sqlite3pp.h"
-#include "pjs-core.hh"
+#include <sqlite3pp.hh>
 #include <unordered_map>
 #include <optional>
+
+#include "pjs-core.hh"
 #include "pdef/dep-info.hh"
 #include "pdef/peer-info.hh"
 #include "pdef/sys-info.hh"

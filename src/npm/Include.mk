@@ -13,9 +13,8 @@ libfloco_OBJS += $(patsubst %.cc,%.o,$(wildcard $(MAKEFILE_DIR)/*.cc))
 
 # ---------------------------------------------------------------------------- #
 
-$(MAKEFILE_DIR)/pjs-core.o:                                        \
-  $(addprefix include/,fetch.hh sqlite3pp.h sqlite3pp.ipp util.hh  \
-                       floco-registry.hh pjs-core.hh)
+$(MAKEFILE_DIR)/pjs-core.o:                                             \
+  $(addprefix include/,fetch.hh util.hh floco-registry.hh pjs-core.hh)
 
 $(MAKEFILE_DIR)/vinfo.o:                                     \
   $(addprefix include/,fetch.hh floco-registry.hh vinfo.hh)

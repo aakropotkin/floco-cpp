@@ -10,7 +10,8 @@
 #include <bitset>
 #include <nlohmann/json.hpp>      // for basic_json
 #include <string>                 // for string, basic_string, hash, allocator
-#include "sqlite3pp.h"
+#include <sqlite3pp.hh>
+
 #include "pjs-core.hh"
 
 

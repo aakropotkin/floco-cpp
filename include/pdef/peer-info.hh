@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include <string>
 #include <bitset>
 #include <nlohmann/json.hpp>
-#include <string>
-#include "sqlite3pp.h"
+#include <sqlite3pp.hh>
+
 #include "pjs-core.hh"
 
 

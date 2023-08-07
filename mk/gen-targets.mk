@@ -27,8 +27,8 @@ $(BIN_TARGETS) $(LIB_TARGETS) $(TEST_TARGETS):
 
 # ---------------------------------------------------------------------------- #
 
-# Generate and include `*.deps' files that contain predicate rules for
-# which sources depend on which headers.
+# Detect headers used by each source file and use them to dynamically generate
+# Makefile dependency rules.
 # This allows rebuilds in development contexts to properly detect modifications.
 
 $(foreach tgt,$(BINS) $(LIBS),$(eval $(call DEPS_template,$(tgt))))

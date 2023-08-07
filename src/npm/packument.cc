@@ -75,6 +75,7 @@ PackumentVInfo::sqlite3Write( sqlite3pp::database & db ) const
   void
 Packument::init( const nlohmann::json & j )
 {
+  std::map<floco::version, floco::timestamp> time;
   for ( auto & [key, value] : j.items() )
     {
       if ( key == "_id" )
@@ -91,7 +92,7 @@ Packument::init( const nlohmann::json & j )
         }
       else if ( key == "time" )
         {
-          this->time = std::move( value );
+          time = std::move( value );
         }
       else if ( key == "dist-tags" )
         {
@@ -110,7 +111,6 @@ Packument::init( const nlohmann::json & j )
     }
 
   /* Do a second pass and inject `dist-tags' into `PackumentVInfo' records. */
-  std::unordered_set<std::string_view> distTags;
   for ( auto i = this->distTags.begin(); i != this->distTags.end(); ++i )
     {
       try
@@ -128,7 +128,7 @@ Packument::init( const nlohmann::json & j )
     }
 
   /* Do a second pass and inject `time' into `PackumentVInfo' records. */
-  for ( auto i = this->time.begin(); i != this->time.end(); ++i )
+  for ( auto i = time.begin(); i != time.end(); ++i )
     {
       if ( ( i->first == "created" ) || ( i->first == "modified" ) )
         {
@@ -138,6 +138,7 @@ Packument::init( const nlohmann::json & j )
         {
           this->versions.at( i->first ).time =
             floco::util::DateTime( i->second );
+          this->time.insert( * i );
         }
       catch( const std::out_of_range & e )
         {
@@ -145,7 +146,6 @@ Packument::init( const nlohmann::json & j )
            * `versions' - these records are NOT avaiable at their "absolute" URL
            * either, and are no longer fetchable.
            * Effectively the are unavaiable to users and should not be shown. */
-          this->time.erase( i );
         }
     }
 

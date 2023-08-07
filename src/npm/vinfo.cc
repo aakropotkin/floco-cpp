@@ -40,7 +40,16 @@ VInfo::init( const nlohmann::json & json )
         }
       else if ( key == "homepage" )
         {
-          this->homepage = std::move( value );
+          if ( value.type() == nlohmann::json::value_t::string )
+            {
+              this->homepage = std::move( value );
+            }
+          else if ( value.type() == nlohmann::json::value_t::array &&
+                    ( ! value.empty() )
+                  )
+            {
+              this->homepage = std::move( value[0] );
+            }
         }
       else if ( key == "description" )
         {
@@ -48,7 +57,14 @@ VInfo::init( const nlohmann::json & json )
         }
       else if ( key == "license" )
         {
-          this->license = std::move( value );
+          if ( value.type() == nlohmann::json::value_t::string )
+            {
+              this->license = std::move( value );
+            }
+          else
+            {
+              this->license = std::move( value.at( "type" ) );
+            }
         }
       else if ( key == "repository" )
         {

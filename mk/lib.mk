@@ -143,6 +143,10 @@ endef
 
 # ---------------------------------------------------------------------------- #
 
+# Detect headers used by each source file and use them to dynamically generate
+# Makefile dependency rules.
+# This allows rebuilds in development contexts to properly detect modifications.
+
 define DEPS_template =
 $$($(1)_DEPS_TARGET): $$($(1)_SRCS)
 	-$$(RM) "$$@"

@@ -22,9 +22,14 @@ main( int argc, char * argv[], char ** envp)
       return EXIT_FAILURE;
     }
 
-  floco::PdefCore pdef = floco::inspect::translate( argv[1] );
+  floco::registry::RegistryDb db;
 
-  std::cout << pdef.toJSON().dump() << std::endl;
+
+  auto [rootKey, translations] = floco::inspect::translate( db, argv[1] );
+
+  std::cerr << "Root: " << rootKey.first << "@" << rootKey.second << std::endl;
+  nlohmann::json j = translations;
+  std::cout << j.dump() << std::endl;
 
   return EXIT_SUCCESS;
 }  /* End `main' */

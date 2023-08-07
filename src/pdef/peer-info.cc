@@ -166,7 +166,7 @@ PeerInfo::operator=( const PjsCore & pjs )
   auto madd  = [&]( std::string_view ident )
   {
     std::string i( ident );
-    if ( this->peers.find( i ) != this->peers.end() )
+    if ( this->peers.find( i ) == this->peers.end() )
       {
         this->peers.emplace( std::move( i ), PeerInfo::Ent() );
       }

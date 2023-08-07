@@ -30,7 +30,7 @@ class SysInfo {
 
     std::list<std::string>                                  cpu     = { "*" };
     std::list<std::string>                                  os      = { "*" };
-    std::unordered_map<std::string, std::list<std::string>> engines;
+    std::unordered_map<std::string, std::string>            engines;
 
     SysInfo() = default;
 

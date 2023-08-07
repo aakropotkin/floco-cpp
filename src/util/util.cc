@@ -200,9 +200,15 @@ initNix()
   if ( didInitNix ) { return; }
   nix::initNix();
   nix::initGC();
+  nix::initPlugins();
+
+  // TODO: push/pop `pureEval' in fetcher.
+  nix::evalSettings.pureEval = false;
+  //nix::evalSettings.pureEval.setDefault( true );
+  nix::evalSettings.useEvalCache.setDefault( true );
+  nix::evalSettings.enableImportFromDerivation.setDefault( false );
 
   /* NOTE: Store settings use `nix::settings' not `nix::globalConfig'. */
-  nix::evalSettings.pureEval = false;
   nix::settings.tarballTtl   = floco::registry::registryTTL;
 
   didInitNix = true;

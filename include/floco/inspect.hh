@@ -6,12 +6,15 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
 #include <filesystem>
 #include <string>
 #include <list>
+#include <unordered_map>
+#include <functional>
+#include <nlohmann/json.hpp>
 
 #include "pdef.hh"
+#include "registry-db.hh"
 
 
 /* -------------------------------------------------------------------------- */
@@ -44,7 +47,27 @@ std::list<std::string> getBinPaths( const std::filesystem::path & tree
 
 /* -------------------------------------------------------------------------- */
 
-PdefCore translate( std::string_view treeURL );
+/**
+ * Create a `pdef` record for a single package.
+ * @param treeURL A fetchable URL containing a `package.json` file.
+ * @return A translated `PdefCore` record.
+ */
+PdefCore translateOne( std::string_view treeURL );
+
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * A hashmap with a `{ <IDENT>: { <VERSION>: <PDEF>, ... }, ... }` hierarchy.
+ */
+using NameVersionCollection =
+  std::unordered_map< floco::ident
+                    , std::unordered_map<floco::version, PdefCore>
+                    >;
+using NvKey = std::pair<floco::ident, floco::version>;
+
+  std::pair<NvKey, NameVersionCollection>
+translate( registry::RegistryDb & registry, std::string_view treeURL );
 
 
 /* -------------------------------------------------------------------------- */

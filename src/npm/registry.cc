@@ -165,6 +165,8 @@ RegistryDb::resolve( floco::ident_view ident, std::string_view rangeOrTag )
       case DT_NONE: case DT_ERROR:
         {
           std::string msg( "Failed to identify descriptor type or '" );
+          msg += ident;
+          msg += '@';
           msg += desc;
           msg += "'.";
           throw FlocoException( msg );
@@ -175,6 +177,8 @@ RegistryDb::resolve( floco::ident_view ident, std::string_view rangeOrTag )
           std::string msg(
             "Descriptor must be a range or dist-tag, but got '"
           );
+          msg += ident;
+          msg += '@';
           msg += desc;
           msg += "'.";
           throw FlocoException( msg );
@@ -186,9 +190,9 @@ RegistryDb::resolve( floco::ident_view ident, std::string_view rangeOrTag )
   if ( isRange )
     {
       std::list<std::string> versions;
-      for ( const auto & [version, timestamp] : pack.time )
+      for ( const auto & [version, _] : pack.versions )
         {
-          if ( version != "modified" ) { versions.emplace_back( version ); }
+          versions.emplace_back( version );
         }
       std::list<std::string> sat = semver::semverSat( desc, versions );
       if ( sat.empty() ) { return std::nullopt; }

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <string>
-#include <bitset>
 #include <nlohmann/json.hpp>
 #include <sqlite3pp.hh>
 

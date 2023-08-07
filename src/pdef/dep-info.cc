@@ -5,6 +5,7 @@
  * -------------------------------------------------------------------------- */
 
 #include "pdef/dep-info.hh"
+#include "floco/descriptor.hh"
 
 
 /* -------------------------------------------------------------------------- */
@@ -184,7 +185,7 @@ DepInfo::operator=( const PjsCore & pjs )
   auto madd  = [&]( std::string_view ident )
   {
     std::string i( ident );
-    if ( this->deps.find( i ) != this->deps.end() )
+    if ( this->deps.find( i ) == this->deps.end() )
       {
         this->deps.emplace( std::move( i ), DepInfo::Ent() );
       }
@@ -193,15 +194,16 @@ DepInfo::operator=( const PjsCore & pjs )
   for ( const auto & [ident, descriptor] : pjs.dependencies.items() )
     {
       madd( ident );
+      /* Perform basic coercion */
       this->deps.at( ident ).descriptor = descriptor;
-      this->deps.at( ident )._flags.set( 0, true );
+      this->deps.at( ident )._flags.set( 0, true );    /* Mark `runtime' */
     }
 
   for ( const auto & [ident, descriptor] : pjs.devDependencies.items() )
     {
       madd( ident );
       this->deps.at( ident ).descriptor = descriptor;
-      this->deps.at( ident )._flags.set( 1, true );
+      this->deps.at( ident )._flags.set( 1, true );    /* Mark `dev' */
     }
 
   for ( const auto & [ident, meta] : pjs.devDependenciesMeta.items() )
@@ -211,18 +213,19 @@ DepInfo::operator=( const PjsCore & pjs )
         {
           if ( key == "optional" )
             {
+              /* Mark `optional' */
               this->deps.at( ident )._flags.set( 2, true );
             }
         }
-      this->deps.at( ident )._flags.set( 1, true );
+      this->deps.at( ident )._flags.set( 1, true );  /* Mark `dev' */
     }
 
   for ( const auto & [ident, descriptor] : pjs.optionalDependencies.items() )
     {
       madd( ident );
       this->deps.at( ident ).descriptor = descriptor;
-      this->deps.at( ident )._flags.set( 0, true );
-      this->deps.at( ident )._flags.set( 3, true );
+      this->deps.at( ident )._flags.set( 0, true );  /* Mark `runtime' */
+      this->deps.at( ident )._flags.set( 2, true );  /* Mark `optional' */
     }
 
   if ( pjs.bundledDependencies.is_array() )
@@ -232,8 +235,8 @@ DepInfo::operator=( const PjsCore & pjs )
           )
         {
           madd( ident );
-          this->deps.at( ident )._flags.set( 0, true );
-          this->deps.at( ident )._flags.set( 4, true );
+          this->deps.at( ident )._flags.set( 0, true );  /* Mark `runtime' */
+          this->deps.at( ident )._flags.set( 3, true );  /* Mark `bundled' */
         }
     }
   else if ( pjs.bundledDependencies.is_boolean() )
@@ -242,7 +245,8 @@ DepInfo::operator=( const PjsCore & pjs )
        {
          for ( auto & [ident, ent] : this->deps )
            {
-             if ( ent.runtime() ) { ent._flags.set( 4, true ); }
+             /* Mark `bundled' */
+             if ( ent.runtime() ) { ent._flags.set( 3, true ); }
            }
        }
     }
